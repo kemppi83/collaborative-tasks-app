@@ -1,4 +1,9 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+
+import { Login } from './features/auth/Login';
+import { PrivateRoute } from './utils/PrivateRoute';
+import { ProtectedComponent } from './features/auth/ProtectedComponent';
 import logo from './logo.svg';
 import { Counter } from './features/counter/Counter';
 import './App.css';
@@ -51,6 +56,13 @@ const App = (): JSX.Element => {
           </a>
         </span>
       </header>
+      <Switch>
+        <Route exact path="/login" component={Login} />
+        <PrivateRoute path="/">
+          <p>Hooray you logged in!</p>
+          <ProtectedComponent />
+        </PrivateRoute>
+      </Switch>
     </div>
   );
 };

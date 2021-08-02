@@ -1,7 +1,18 @@
 import * as React from 'react';
+import {
+  Input,
+  InputGroup,
+  InputRightElement,
+  VStack,
+  Button,
+  Divider,
+  Center,
+  Box,
+  useToast
+} from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/store';
-import { setCredentials } from './authSlice';
+// import { useAppDispatch } from '../../hooks/store';
+// import { setCredentials } from './authSlice';
 
 import { ProtectedComponent } from './ProtectedComponent';
 import { useLoginMutation } from '../../app/services/auth';
@@ -18,21 +29,27 @@ const PasswordInput = ({
   const handleClick = () => setShow(!show);
 
   return (
-    <>
-      <input
+    <InputGroup size="md">
+      <Input
+        pr="4.5rem"
         type={show ? 'text' : 'password'}
         placeholder="Enter password"
         name={name}
         onChange={onChange}
       />
-      <button onClick={handleClick}>{show ? 'Hide' : 'Show'}</button>
-    </>
+      <InputRightElement width="4.5rem">
+        <Button h="1.75rem" size="sm" onClick={handleClick}>
+          {show ? 'Hide' : 'Show'}
+        </Button>
+      </InputRightElement>
+    </InputGroup>
   );
 };
 
 export const Login = (): JSX.Element => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const { push } = useHistory();
+  const toast = useToast();
 
   const [formState, setFormstate] = React.useState<LoginRequest>({
     email: '',
@@ -47,33 +64,47 @@ export const Login = (): JSX.Element => {
     setFormstate(prev => ({ ...prev, [name]: value }));
 
   return (
-    <>
-      <p>Hint: enter anything, or leave it blank and hit login</p>
-      <input
-        onChange={handleChange}
-        name="email"
-        type="text"
-        placeholder="Email"
-      />
-      <PasswordInput onChange={handleChange} name="password" />
-      <button
-        type="button"
-        onClick={async () => {
-          try {
-            const user = await login(formState).unwrap();
-            dispatch(setCredentials(user));
-            push('/');
-          } catch (err) {
-            alert('There was an error. Check the console.');
-            console.log(err);
-          }
-        }}
-      >
-        Login
-      </button>
-      {isLoading && <p>Logging in...</p>}
-      <ProtectedComponent />
-    </>
+    <Center h="500px">
+      <VStack spacing="4">
+        <Box>Hint: enter anything, or leave it blank and hit login</Box>
+        <InputGroup>
+          <Input
+            onChange={handleChange}
+            name="email"
+            type="text"
+            placeholder="Email"
+          />
+        </InputGroup>
+
+        <InputGroup>
+          <PasswordInput onChange={handleChange} name="password" />
+        </InputGroup>
+        <Button
+          isFullWidth
+          onClick={async () => {
+            try {
+              await login(formState).unwrap();
+              // const user = await login(formState).unwrap();
+              // dispatch(setCredentials(user));
+              push('/');
+            } catch (err) {
+              toast({
+                status: 'error',
+                title: 'Error',
+                description: 'Oh no, there was an error!',
+                isClosable: true
+              });
+            }
+          }}
+          colorScheme="green"
+          isLoading={isLoading}
+        >
+          Login
+        </Button>
+        <Divider />
+        <ProtectedComponent />
+      </VStack>
+    </Center>
   );
 };
 

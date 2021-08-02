@@ -1,25 +1,31 @@
 import * as React from 'react';
+import { Center, VStack, Box, Button } from '@chakra-ui/react';
 import { useProtectedMutation } from '../../app/services/auth';
 
 export const ProtectedComponent = (): JSX.Element => {
   const [attemptAccess, { data, error, isLoading }] = useProtectedMutation();
 
   return (
-    <>
-      <button type="button" onClick={() => attemptAccess()}>
-        Make an authenticated request
-      </button>
-      {isLoading && <p>Data is loading</p>}
-      {data ? (
-        <>
-          Data:
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-        </>
-      ) : error ? (
-        <>
-          Error: <pre>{JSON.stringify(error, null, 2)}</pre>
-        </>
-      ) : null}
-    </>
+    <Center w="400px">
+      <VStack>
+        <Box>
+          <Button onClick={() => attemptAccess()} isLoading={isLoading}>
+            Make an authenticated request
+          </Button>
+        </Box>
+        <Box>
+          {data ? (
+            <>
+              Data:
+              <pre>{JSON.stringify(data, null, 2)}</pre>
+            </>
+          ) : error ? (
+            <>
+              Error: <pre>{JSON.stringify(error, null, 2)}</pre>
+            </>
+          ) : null}
+        </Box>
+      </VStack>
+    </Center>
   );
 };

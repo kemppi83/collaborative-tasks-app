@@ -51,7 +51,7 @@ export const Login = (): JSX.Element => {
       <p>Hint: enter anything, or leave it blank and hit login</p>
       <input
         onChange={handleChange}
-        name="username"
+        name="email"
         type="text"
         placeholder="Email"
       />

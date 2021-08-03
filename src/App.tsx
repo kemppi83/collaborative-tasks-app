@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Box, Center, VStack } from '@chakra-ui/react';
 
 import { Login } from './features/auth/Login';
+import { Signup } from './features/auth/Signup';
 import { PrivateRoute } from './utils/PrivateRoute';
 import { ProtectedComponent } from './features/auth/ProtectedComponent';
 import { Counter } from './features/counter/Counter';
@@ -32,6 +33,7 @@ const App = (): JSX.Element => {
       </header>
       <Switch>
         <Route exact path="/login" component={Login} />
+        <Route exact path="/signup" component={Signup} />
         <PrivateRoute path="/">
           <Hooray />
         </PrivateRoute>

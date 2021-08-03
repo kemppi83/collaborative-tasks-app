@@ -15,14 +15,12 @@ import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
 
 import { ProtectedComponent } from './ProtectedComponent';
-import { useLoginMutation } from '../../app/services/auth';
-import type { LoginRequest } from '../../app/services/auth';
+import { useSignupMutation } from '../../app/services/auth';
+import type { SignupRequest } from '../../app/services/auth';
 
 const PasswordInput = ({
-  name,
   onChange
 }: {
-  name: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }) => {
   const [show, setShow] = React.useState(false);
@@ -34,7 +32,14 @@ const PasswordInput = ({
         pr="4.5rem"
         type={show ? 'text' : 'password'}
         placeholder="Enter password"
-        name={name}
+        name={'password'}
+        onChange={onChange}
+      />
+      <Input
+        pr="4.5rem"
+        type={show ? 'text' : 'password'}
+        placeholder="Confirm password"
+        name={'confirmPassword'}
         onChange={onChange}
       />
       <InputRightElement width="4.5rem">
@@ -46,17 +51,19 @@ const PasswordInput = ({
   );
 };
 
-export const Login = (): JSX.Element => {
+export const Signup = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { push } = useHistory();
   const toast = useToast();
 
-  const [formState, setFormstate] = React.useState<LoginRequest>({
+  const [formState, setFormstate] = React.useState<SignupRequest>({
+    username: '',
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [signup, { isLoading }] = useSignupMutation();
 
   const handleChange = ({
     target: { name, value }
@@ -66,24 +73,33 @@ export const Login = (): JSX.Element => {
   return (
     <Center h="500px">
       <VStack spacing="4">
-        <Box>Hint: enter anything, or leave it blank and hit login</Box>
+        <Box>
+          Enter your email and optional username (email will be used as your
+          username if left blank.
+        </Box>
         <InputGroup>
           <Input
             onChange={handleChange}
-            name="email"
+            name="username"
             type="text"
+            placeholder="Username"
+          />
+          <Input
+            onChange={handleChange}
+            name="email"
+            type="email"
             placeholder="Email"
           />
         </InputGroup>
 
         <InputGroup>
-          <PasswordInput onChange={handleChange} name="password" />
+          <PasswordInput onChange={handleChange} />
         </InputGroup>
         <Button
           isFullWidth
           onClick={async () => {
             try {
-              const user = await login(formState).unwrap();
+              const user = await signup(formState).unwrap();
               dispatch(setCredentials(user));
               push('/');
             } catch (err) {
@@ -107,4 +123,4 @@ export const Login = (): JSX.Element => {
   );
 };
 
-export default Login;
+export default Signup;

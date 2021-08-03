@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
 
 export interface User {
-  first_name: string;
-  last_name: string;
+  username: string;
+  email: string;
 }
 
 export interface UserResponse {
@@ -11,11 +11,17 @@ export interface UserResponse {
   token: string;
 }
 
+export interface SignupRequest {
+  username?: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export interface LoginRequest {
   email: string;
   password: string;
 }
-
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: 'http://localhost:3001/api/',
@@ -29,6 +35,13 @@ export const api = createApi({
     }
   }),
   endpoints: builder => ({
+    signup: builder.mutation<UserResponse, SignupRequest>({
+      query: signupData => ({
+        url: 'signup',
+        method: 'POST',
+        body: signupData
+      })
+    }),
     login: builder.mutation<UserResponse, LoginRequest>({
       query: credentials => ({
         url: 'login',
@@ -42,4 +55,5 @@ export const api = createApi({
   })
 });
 
-export const { useLoginMutation, useProtectedMutation } = api;
+export const { useSignupMutation, useLoginMutation, useProtectedMutation } =
+  api;

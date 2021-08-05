@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { useTypedSelector, useAppDispatch } from '../../hooks/store';
 import {
   decrement,
   increment,
@@ -12,7 +12,7 @@ import {
 import styles from './Counter.module.css';
 
 export const Counter = (): JSX.Element => {
-  const count = useAppSelector(selectCount);
+  const count = useTypedSelector(selectCount);
   const dispatch = useAppDispatch();
   const [incrementAmount, setIncrementAmount] = useState('2');
 

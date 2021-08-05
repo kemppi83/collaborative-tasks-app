@@ -5,18 +5,19 @@ import {
   InputRightElement,
   VStack,
   Button,
-  Divider,
   Center,
-  Box,
   useToast
 } from '@chakra-ui/react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
 
-import { ProtectedComponent } from './ProtectedComponent';
 import { useLoginMutation } from '../../app/services/auth';
 import type { LoginRequest } from '../../app/services/auth';
+
+interface stateType {
+  from: { pathname: string };
+}
 
 const PasswordInput = ({
   name,
@@ -47,6 +48,7 @@ const PasswordInput = ({
 };
 
 export const Login = (): JSX.Element => {
+  const { state } = useLocation<stateType>();
   const dispatch = useAppDispatch();
   const { push } = useHistory();
   const toast = useToast();
@@ -66,7 +68,6 @@ export const Login = (): JSX.Element => {
   return (
     <Center h="500px">
       <VStack spacing="4">
-        <Box>Hint: enter anything, or leave it blank and hit login</Box>
         <InputGroup>
           <Input
             onChange={handleChange}
@@ -85,7 +86,9 @@ export const Login = (): JSX.Element => {
             try {
               const user = await login(formState).unwrap();
               dispatch(setCredentials(user));
-              push('/');
+              console.log('login: ', user);
+              localStorage.setItem('token', user.token);
+              push(state.from.pathname);
             } catch (err) {
               toast({
                 status: 'error',
@@ -100,8 +103,6 @@ export const Login = (): JSX.Element => {
         >
           Login
         </Button>
-        <Divider />
-        <ProtectedComponent />
       </VStack>
     </Center>
   );

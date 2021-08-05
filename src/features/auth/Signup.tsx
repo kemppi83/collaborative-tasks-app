@@ -1,11 +1,9 @@
 import * as React from 'react';
 import {
   Input,
-  InputGroup,
-  InputRightElement,
+  HStack,
   VStack,
   Button,
-  Divider,
   Center,
   Box,
   useToast
@@ -14,7 +12,6 @@ import { useHistory } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
 
-import { ProtectedComponent } from './ProtectedComponent';
 import { useSignupMutation } from '../../app/services/auth';
 import type { SignupRequest } from '../../app/services/auth';
 
@@ -27,27 +24,43 @@ const PasswordInput = ({
   const handleClick = () => setShow(!show);
 
   return (
-    <InputGroup size="md">
-      <Input
-        pr="4.5rem"
-        type={show ? 'text' : 'password'}
-        placeholder="Enter password"
-        name={'password'}
-        onChange={onChange}
-      />
-      <Input
-        pr="4.5rem"
-        type={show ? 'text' : 'password'}
-        placeholder="Confirm password"
-        name={'confirmPassword'}
-        onChange={onChange}
-      />
-      <InputRightElement width="4.5rem">
-        <Button h="1.75rem" size="sm" onClick={handleClick}>
+    <HStack justifyContent="center">
+      <VStack spacing="2">
+        <Input
+          pr="4.5rem"
+          onChange={onChange}
+          name="username"
+          type="text"
+          placeholder="Username"
+        />
+        <Input
+          pr="4.5rem"
+          onChange={onChange}
+          name="email"
+          type="email"
+          placeholder="Email"
+        />
+        <Input
+          pr="4.5rem"
+          type={show ? 'text' : 'password'}
+          placeholder="Enter password"
+          name={'password'}
+          onChange={onChange}
+        />
+        <Input
+          pr="4.5rem"
+          type={show ? 'text' : 'password'}
+          placeholder="Confirm password"
+          name={'confirmPassword'}
+          onChange={onChange}
+        />
+      </VStack>
+      <Box>
+        <Button h="1.75rem" size="sm" onClick={handleClick} marginTop="auto">
           {show ? 'Hide' : 'Show'}
         </Button>
-      </InputRightElement>
-    </InputGroup>
+      </Box>
+    </HStack>
   );
 };
 
@@ -72,31 +85,16 @@ export const Signup = (): JSX.Element => {
 
   return (
     <Center h="500px">
-      <VStack spacing="4">
-        <Box>
+      <VStack spacing="2">
+        <Box width="500px">
           Enter your email and optional username (email will be used as your
-          username if left blank.
+          username if left blank).
         </Box>
-        <InputGroup>
-          <Input
-            onChange={handleChange}
-            name="username"
-            type="text"
-            placeholder="Username"
-          />
-          <Input
-            onChange={handleChange}
-            name="email"
-            type="email"
-            placeholder="Email"
-          />
-        </InputGroup>
-
-        <InputGroup>
+        <Box>
           <PasswordInput onChange={handleChange} />
-        </InputGroup>
+        </Box>
         <Button
-          isFullWidth
+          width="200px"
           onClick={async () => {
             try {
               const user = await signup(formState).unwrap();
@@ -114,10 +112,8 @@ export const Signup = (): JSX.Element => {
           colorScheme="green"
           isLoading={isLoading}
         >
-          Login
+          Sign Up
         </Button>
-        <Divider />
-        <ProtectedComponent />
       </VStack>
     </Center>
   );

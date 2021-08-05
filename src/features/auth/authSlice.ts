@@ -22,11 +22,12 @@ const authSlice = createSlice({
     ) => {
       state.user = user;
       state.token = token;
-    }
+    },
+    resetCredentials: state => initialState
   }
 });
 
-export const { setCredentials } = authSlice.actions;
+export const { setCredentials, resetCredentials } = authSlice.actions;
 export default authSlice.reducer;
 export const selectCurrentUser = (state: RootState): User | null =>
   state.auth.user;

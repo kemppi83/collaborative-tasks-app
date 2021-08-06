@@ -12,8 +12,8 @@ import { useHistory } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
 
-import { useSignupMutation } from '../../app/services/auth';
-import type { SignupRequest } from '../../app/services/auth';
+import { useSignupMutation } from '../../app/services/api';
+import type { SignupRequest } from '../../app/services/api';
 
 const PasswordInput = ({
   onChange

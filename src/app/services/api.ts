@@ -23,11 +23,18 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface Todo {
+  id: string;
+  title: string;
+  text: string;
+  timestamp: number;
+  status: string;
+}
+
 let url = 'http://localhost:3001/api/';
 if (process.env.NODE_ENV === 'production') {
   url = 'Add url here when the server is deployed.';
 }
-console.log(url);
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({

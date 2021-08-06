@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { Box, Center, VStack, HStack, Button } from '@chakra-ui/react';
 
@@ -7,10 +7,14 @@ import { Signup } from './features/auth/Signup';
 import { PrivateRoute } from './utils/PrivateRoute';
 import { Counter } from './features/counter/Counter';
 import { useAuth } from './hooks/useAuth';
-import { useVerifytokenQuery } from './app/services/auth';
+import { useVerifytokenQuery } from './app/services/api';
 import { useAppDispatch } from './hooks/store';
 import { setCredentials, resetCredentials } from './features/auth/authSlice';
-import type { User } from './app/services/auth';
+
+import AddTodo from './features/todo/AddTodo';
+// import TodoList from './features/todo/TodoList';
+
+import type { User } from './app/services/api';
 // import './App.css';
 
 interface HoorayProps {
@@ -39,6 +43,7 @@ const App = (): JSX.Element => {
   }
 
   const logoutHandler = () => {
+    push('/login');
     dispatch(resetCredentials());
     localStorage.removeItem('token');
   };
@@ -74,6 +79,11 @@ const App = (): JSX.Element => {
             <p>
               Edit <code>src/App.tsx</code> and save to reload.
             </p>
+          </PrivateRoute>
+          <PrivateRoute path="/todos">
+            {/* <AddTodo /> */}
+            {/* <TodoList /> */}
+            <p>hello</p>
           </PrivateRoute>
         </Switch>
       )}

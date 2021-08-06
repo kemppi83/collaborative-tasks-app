@@ -1,13 +1,15 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import { api } from './services/auth';
+import { api } from './services/api';
 import authReducer from '../features/auth/authSlice';
 import counterReducer from '../features/counter/counterSlice';
+import todoReducer from '../features/todo/todoSlice';
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     auth: authReducer,
-    counter: counterReducer
+    counter: counterReducer,
+    todo: todoReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(api.middleware)

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import { Box, Center, VStack, HStack, Button } from '@chakra-ui/react';
 
@@ -34,18 +34,36 @@ const Hooray = (props: HoorayProps) => {
 };
 
 const App = (): JSX.Element => {
+  const [allSetup, setAllSetup] = useState(false);
   const { push } = useHistory();
   const { user } = useAuth();
   const { data, isLoading } = useVerifytokenQuery();
   const dispatch = useAppDispatch();
-  if (data) {
-    dispatch(setCredentials(data));
-  }
+  console.log(allSetup);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (data) {
+        dispatch(setCredentials(data));
+      } else {
+        setAllSetup(true);
+      }
+    }
+    return function cleanup() {
+      dispatch(resetCredentials());
+    };
+  }, [data, dispatch, isLoading]);
+
+  useEffect(() => {
+    if (user) {
+      setAllSetup(true);
+    }
+  }, [user]);
 
   const logoutHandler = () => {
-    push('/login');
     dispatch(resetCredentials());
     localStorage.removeItem('token');
+    push('/login');
   };
 
   return (
@@ -67,7 +85,7 @@ const App = (): JSX.Element => {
           </HStack>
         )}
       </header>
-      {!isLoading && (
+      {allSetup && (
         <Switch>
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />

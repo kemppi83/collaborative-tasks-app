@@ -7,24 +7,12 @@ import { setTodos } from './todoSlice';
 // import './NewTodo.css';
 
 const AddTodo = (): JSX.Element => {
-  // const [todoTitle, setTodoTitle] = useState('');
-  // const [todoText, setTodoText] = useState('');
   const [formState, setFormstate] = useState<Partial<Todo>>({
     title: '',
     text: ''
   });
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
-
-  // const handleTodoTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = e.target;
-  //   setTodoTitle(value);
-  // };
-
-  // const handleTodoTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { value } = e.target;
-  //   setTodoText(value);
-  // };
 
   const handleChange = ({
     target: { name, value }

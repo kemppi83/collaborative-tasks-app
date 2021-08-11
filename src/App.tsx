@@ -12,7 +12,7 @@ import { useAppDispatch } from './hooks/store';
 import { setCredentials, resetCredentials } from './features/auth/authSlice';
 
 import AddTodo from './features/todo/AddTodo';
-// import TodoList from './features/todo/TodoList';
+import TodoList from './features/todo/TodoList';
 
 import type { User } from './app/services/api';
 // import './App.css';
@@ -39,7 +39,6 @@ const App = (): JSX.Element => {
   const { user } = useAuth();
   const { data, isLoading } = useVerifytokenQuery();
   const dispatch = useAppDispatch();
-  console.log(allSetup);
 
   useEffect(() => {
     if (!isLoading) {
@@ -99,9 +98,8 @@ const App = (): JSX.Element => {
             </p>
           </PrivateRoute>
           <PrivateRoute path="/todos">
-            {/* <AddTodo /> */}
-            {/* <TodoList /> */}
-            <p>hello</p>
+            <AddTodo />
+            <TodoList />
           </PrivateRoute>
         </Switch>
       )}

@@ -19,11 +19,24 @@ const todoSlice = createSlice({
   reducers: {
     setTodos: (state, { payload: { todo } }: PayloadAction<{ todo: Todo }>) => {
       state.todos.push(todo);
+    },
+    updateStatus: (
+      state,
+      { payload: { todoId } }: PayloadAction<{ todoId: string }>
+    ) => {
+      const updatedTodos = [...state.todos];
+      const updateIndex = updatedTodos.findIndex(i => i.id === todoId);
+      if (updatedTodos[updateIndex].status === 'active') {
+        updatedTodos[updateIndex].status = 'done';
+      } else {
+        updatedTodos[updateIndex].status = 'active';
+      }
+      state.todos = updatedTodos;
     }
   }
 });
 
-export const { setTodos } = todoSlice.actions;
+export const { setTodos, updateStatus } = todoSlice.actions;
 export default todoSlice.reducer;
 export const selectCurrentUserTodos = (state: RootState): Todo[] =>
   state.todo.todos;

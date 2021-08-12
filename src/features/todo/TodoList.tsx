@@ -1,14 +1,18 @@
 import React from 'react';
 import { useTodos } from '../../hooks/useTodos';
+import { useAppDispatch } from '../../hooks/store';
+import { updateStatus } from './todoSlice';
 
 import { Todo } from '../../app/services/api';
 // import './TodoList.css';
 
 const TodoList = (): JSX.Element => {
   const { todos } = useTodos();
+  const dispatch = useAppDispatch();
 
   const onChangeStatus = (id: string): void => {
     console.log(id);
+    dispatch(updateStatus({ todoId: id }));
   };
 
   return (

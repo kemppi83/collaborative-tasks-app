@@ -17,7 +17,7 @@ const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
-    setTodos: (state, { payload: { todo } }: PayloadAction<{ todo: Todo }>) => {
+    addTodo: (state, { payload: { todo } }: PayloadAction<{ todo: Todo }>) => {
       state.todos.push(todo);
     },
     updateStatus: (
@@ -32,11 +32,20 @@ const todoSlice = createSlice({
         updatedTodos[updateIndex].status = 'active';
       }
       state.todos = updatedTodos;
+    },
+    deleteTodo: (
+      state,
+      { payload: { todoId } }: PayloadAction<{ todoId: string }>
+    ) => {
+      const updatedTodos = [...state.todos];
+      const updateIndex = updatedTodos.findIndex(i => i.id === todoId);
+      updatedTodos.splice(updateIndex, 1);
+      state.todos = updatedTodos;
     }
   }
 });
 
-export const { setTodos, updateStatus } = todoSlice.actions;
+export const { addTodo, updateStatus, deleteTodo } = todoSlice.actions;
 export default todoSlice.reducer;
 export const selectCurrentUserTodos = (state: RootState): Todo[] =>
   state.todo.todos;

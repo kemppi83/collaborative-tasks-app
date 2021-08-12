@@ -3,8 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import type { Todo } from '../../app/services/api';
 import { useAppDispatch } from '../../hooks/store';
-import { setTodos } from './todoSlice';
-// import './NewTodo.css';
+import { addTodo } from './todoSlice';
 
 const AddTodo = (): JSX.Element => {
   const [formState, setFormstate] = useState<Partial<Todo>>({
@@ -27,7 +26,7 @@ const AddTodo = (): JSX.Element => {
 
     setError('');
     dispatch(
-      setTodos({
+      addTodo({
         todo: {
           id: uuidv4(),
           title: formState.title,

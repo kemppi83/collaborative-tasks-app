@@ -23,11 +23,36 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface Todo {
+  id: string;
+  title: string;
+  text: string;
+  timestamp: number;
+  status: string;
+}
+
+interface GetTodosResponse {
+  todos: Todo[];
+}
+
+interface CreateTodoResponse {
+  message: string;
+  createdTodo: Todo;
+}
+
+interface UpdateTodoResponse {
+  message: string;
+  updatedTodo: Todo;
+}
+
+interface DeleteTodoResponse {
+  message: string;
+}
+
 let url = 'http://localhost:3001/api/';
 if (process.env.NODE_ENV === 'production') {
   url = 'Add url here when the server is deployed.';
 }
-console.log(url);
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -60,11 +85,30 @@ export const api = createApi({
         body: credentials
       })
     }),
-    protected: builder.mutation<{ message: string }, void>({
-      query: () => 'protected'
-    }),
-    verifytoken: builder.query<UserResponse, void>({
+    verifyToken: builder.query<UserResponse, void>({
       query: () => 'verifytoken'
+    }),
+    getTodos: builder.query<GetTodosResponse, void>({
+      query: () => 'todos'
+    }),
+    postTodo: builder.mutation<CreateTodoResponse, Todo>({
+      query: newTodo => ({
+        url: 'todos',
+        method: 'POST',
+        body: newTodo
+      })
+    }),
+    updateTodo: builder.mutation<UpdateTodoResponse, string>({
+      query: id => ({
+        url: `todos/${id}`,
+        method: 'PATCH'
+      })
+    }),
+    dbDeleteTodo: builder.mutation<DeleteTodoResponse, string>({
+      query: id => ({
+        url: `todos/${id}`,
+        method: 'DELETE'
+      })
     })
   })
 });
@@ -72,6 +116,9 @@ export const api = createApi({
 export const {
   useSignupMutation,
   useLoginMutation,
-  useProtectedMutation,
-  useVerifytokenQuery
+  useVerifyTokenQuery,
+  useGetTodosQuery,
+  usePostTodoMutation,
+  useUpdateTodoMutation,
+  useDbDeleteTodoMutation
 } = api;

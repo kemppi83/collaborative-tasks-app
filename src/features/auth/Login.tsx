@@ -12,8 +12,8 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
 
-import { useLoginMutation } from '../../app/services/auth';
-import type { LoginRequest } from '../../app/services/auth';
+import { useLoginMutation } from '../../app/services/api';
+import type { LoginRequest } from '../../app/services/api';
 
 interface stateType {
   from: { pathname: string };
@@ -88,8 +88,13 @@ export const Login = (): JSX.Element => {
               dispatch(setCredentials(user));
               console.log('login: ', user);
               localStorage.setItem('token', user.token);
-              push(state.from.pathname);
+              let returnUrl = '/';
+              if (state && state.from && state.from.pathname) {
+                returnUrl = state.from.pathname;
+              }
+              push(returnUrl);
             } catch (err) {
+              console.log(err);
               toast({
                 status: 'error',
                 title: 'Error',

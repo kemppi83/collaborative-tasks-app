@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
-import { Box, Center, VStack, HStack, Button } from '@chakra-ui/react';
+import { HStack, Button } from '@chakra-ui/react';
 
 import { Login } from './features/auth/Login';
 import { Signup } from './features/auth/Signup';
@@ -14,25 +14,6 @@ import { resetTodos } from './features/todo/todoSlice';
 
 import AddTodo from './features/todo/AddTodo';
 import TodoList from './features/todo/TodoList';
-
-import type { User } from './app/services/api';
-// import './App.css';
-
-interface HoorayProps {
-  user: User | null;
-}
-
-const Hooray = (props: HoorayProps) => {
-  return (
-    <Center h="500px">
-      <VStack>
-        <Box>
-          Hooray you logged in! {props.user ? props.user.username : null}
-        </Box>
-      </VStack>
-    </Center>
-  );
-};
 
 const App = (): JSX.Element => {
   const [allSetup, setAllSetup] = useState(false);
@@ -72,9 +53,12 @@ const App = (): JSX.Element => {
       <header className="App-header">
         <h1>Welcome to Collaborative Tasks!</h1>
         {user ? (
-          <Button h="1.75rem" size="sm" onClick={logoutHandler}>
-            Logout
-          </Button>
+          <>
+            <p>Hello {user ? user.username : null}</p>
+            <Button h="1.75rem" size="sm" onClick={logoutHandler}>
+              Logout
+            </Button>
+          </>
         ) : (
           <HStack>
             <Button h="1.75rem" size="sm" onClick={() => push('/login')}>
@@ -91,17 +75,14 @@ const App = (): JSX.Element => {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={Signup} />
           <PrivateRoute exact path="/">
-            <Hooray user={user} />
+            <AddTodo />
+            <TodoList />
           </PrivateRoute>
           <PrivateRoute path="/test">
             <Counter />
             <p>
               Edit <code>src/App.tsx</code> and save to reload.
             </p>
-          </PrivateRoute>
-          <PrivateRoute path="/todos">
-            <AddTodo />
-            <TodoList />
           </PrivateRoute>
         </Switch>
       )}

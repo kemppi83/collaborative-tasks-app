@@ -6,10 +6,8 @@ interface TodosState {
   todos: Todo[];
 }
 
-const storage = localStorage.getItem('todos');
-
 const initialState: TodosState = {
-  ...(storage ? { todos: JSON.parse(storage) } : { todos: [] })
+  todos: []
 };
 
 // WARNING: setTodos overwrites the whole todos state.
@@ -41,11 +39,13 @@ const todoSlice = createSlice({
       const updateIndex = updatedTodos.findIndex(i => i.id === todoId);
       updatedTodos.splice(updateIndex, 1);
       state.todos = updatedTodos;
-    }
+    },
+    resetTodos: state => initialState
   }
 });
 
-export const { addTodo, updateStatus, deleteTodo } = todoSlice.actions;
+export const { addTodo, updateStatus, deleteTodo, resetTodos } =
+  todoSlice.actions;
 export default todoSlice.reducer;
 export const selectCurrentUserTodos = (state: RootState): Todo[] =>
   state.todo.todos;

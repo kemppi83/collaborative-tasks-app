@@ -7,9 +7,10 @@ import { Signup } from './features/auth/Signup';
 import { PrivateRoute } from './utils/PrivateRoute';
 import { Counter } from './features/counter/Counter';
 import { useAuth } from './hooks/useAuth';
-import { useVerifytokenQuery } from './app/services/api';
+import { useVerifyTokenQuery } from './app/services/api';
 import { useAppDispatch } from './hooks/store';
 import { setCredentials, resetCredentials } from './features/auth/authSlice';
+import { resetTodos } from './features/todo/todoSlice';
 
 import AddTodo from './features/todo/AddTodo';
 import TodoList from './features/todo/TodoList';
@@ -37,7 +38,7 @@ const App = (): JSX.Element => {
   const [allSetup, setAllSetup] = useState(false);
   const { push } = useHistory();
   const { user } = useAuth();
-  const { data, isLoading } = useVerifytokenQuery();
+  const { data, isLoading } = useVerifyTokenQuery();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -60,6 +61,7 @@ const App = (): JSX.Element => {
   }, [user]);
 
   const logoutHandler = () => {
+    dispatch(resetTodos());
     dispatch(resetCredentials());
     localStorage.removeItem('token');
     push('/login');

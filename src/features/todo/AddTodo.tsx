@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { Todo } from '../../app/services/api';
 import { useAppDispatch } from '../../hooks/store';
 import { addTodo } from './todoSlice';
+import { usePostTodoMutation } from '../../app/services/api';
+import type { Todo } from '../../app/services/api';
 
 const AddTodo = (): JSX.Element => {
   const [formState, setFormstate] = useState<Partial<Todo>>({
@@ -12,30 +13,40 @@ const AddTodo = (): JSX.Element => {
   });
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
+  const [postTodo] = usePostTodoMutation();
 
   const handleChange = ({
     target: { name, value }
   }: React.ChangeEvent<HTMLInputElement>) =>
     setFormstate(prev => ({ ...prev, [name]: value }));
 
-  const todoSubmitHandler = (event: React.FormEvent) => {
+  const todoSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!formState.title) {
       return setError('Todo title is required!');
     }
 
+    const newTodo = {
+      id: uuidv4(),
+      title: formState.title,
+      ...(formState.text ? { text: formState.text } : { text: '' }),
+      timestamp: Date.now(),
+      status: 'active'
+    } as Todo;
+
     setError('');
     dispatch(
       addTodo({
-        todo: {
-          id: uuidv4(),
-          title: formState.title,
-          ...(formState.text ? { text: formState.text } : { text: '' }),
-          timestamp: Date.now(),
-          status: 'active'
-        }
+        todo: newTodo
       })
     );
+
+    try {
+      const postedTodo = await postTodo(newTodo).unwrap();
+      console.log(postedTodo);
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   return (

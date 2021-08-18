@@ -46,6 +46,11 @@ const AddTodo = (): JSX.Element => {
       })
     );
 
+    setFormstate({
+      title: '',
+      description: ''
+    });
+
     try {
       const postedTodo = await postTodo(newTodo).unwrap();
       console.log(postedTodo);
@@ -68,11 +73,11 @@ const AddTodo = (): JSX.Element => {
         onChange={handleChange}
       />
 
-      <label htmlFor="text">Text:</label>
+      <label htmlFor="description">Text:</label>
       <input
-        data-testid="text"
+        data-testid="description"
         type="text"
-        name="text"
+        name="description"
         value={formState.description}
         onChange={handleChange}
       />

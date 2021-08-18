@@ -52,6 +52,12 @@ interface DeleteTodoResponse {
   message: string;
 }
 
+export interface Message {
+  id: string;
+  userName: string;
+  text: string;
+}
+
 let url = 'http://localhost:3001/api/';
 if (process.env.NODE_ENV === 'production') {
   url = 'Add url here when the server is deployed.';

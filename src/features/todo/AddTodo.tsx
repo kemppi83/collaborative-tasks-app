@@ -9,7 +9,7 @@ import type { Todo } from '../../app/services/api';
 const AddTodo = (): JSX.Element => {
   const [formState, setFormstate] = useState<Partial<Todo>>({
     title: '',
-    text: ''
+    description: ''
   });
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
@@ -29,9 +29,14 @@ const AddTodo = (): JSX.Element => {
     const newTodo = {
       id: uuidv4(),
       title: formState.title,
-      ...(formState.text ? { text: formState.text } : { text: '' }),
+      ...(formState.description
+        ? { description: formState.description }
+        : { description: '' }),
       timestamp: Date.now(),
-      status: 'active'
+      status: 'active',
+      collaborators: [],
+      tasks: [],
+      owner: true
     } as Todo;
 
     setError('');
@@ -68,7 +73,7 @@ const AddTodo = (): JSX.Element => {
         data-testid="text"
         type="text"
         name="text"
-        value={formState.text}
+        value={formState.description}
         onChange={handleChange}
       />
 

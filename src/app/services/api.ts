@@ -26,9 +26,12 @@ export interface LoginRequest {
 export interface Todo {
   id: string;
   title: string;
-  text: string;
+  description: string;
   timestamp: number;
   status: string;
+  collaborators: string[];
+  tasks: string[];
+  owner: boolean;
 }
 
 interface GetTodosResponse {

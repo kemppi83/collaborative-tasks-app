@@ -8,6 +8,14 @@ import {
   useDbDeleteTodoMutation
 } from '../../app/services/api';
 
+/* TODO:
+  - data.todos will be split to data.todos.own and data.todos.collaboration
+    - render first the own and then the collab
+    - only own gets a delete button
+    - all todos will get 'add task' button
+    - all tasks of both todo types will get 'delete' and 'changestatus' buttons
+*/
+
 const TodoList = (): JSX.Element => {
   const { todos } = useTodos();
   const dispatch = useAppDispatch();
@@ -49,7 +57,7 @@ const TodoList = (): JSX.Element => {
       {todos.map(todo => (
         <li key={todo.id} className={`todocard__${todo.status}`}>
           <p className="todocard__title">{todo.title}</p>
-          <p className="todocard__text">{todo.text}</p>
+          <p className="todocard__text">{todo.description}</p>
           {todo.status === 'active' ? (
             <button
               className="button--done"

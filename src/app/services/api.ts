@@ -1,62 +1,78 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { RootState } from '../store';
+import type {
+  UserResponse,
+  SignupRequest,
+  LoginRequest,
+  Todo,
+  GetTodosResponse,
+  CreateTodoResponse,
+  UpdateTodoRequest,
+  UpdateTodoResponse,
+  DeleteTodoResponse
+} from '../models';
 
-export interface User {
-  username: string;
-  email: string;
-}
+// export interface User {
+//   username: string;
+//   email: string;
+// }
 
-export interface UserResponse {
-  user: User;
-  token: string;
-}
+// export interface UserResponse {
+//   user: User;
+//   token: string;
+// }
 
-export interface SignupRequest {
-  username?: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-}
+// export interface SignupRequest {
+//   username?: string;
+//   email: string;
+//   password: string;
+//   confirmPassword: string;
+// }
 
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
+// export interface LoginRequest {
+//   email: string;
+//   password: string;
+// }
 
-export interface Todo {
-  id: string;
-  title: string;
-  description: string;
-  timestamp: number;
-  status: string;
-  collaborators: string[];
-  tasks: string[];
-  owner: boolean;
-}
+// export interface Todo {
+//   id: string;
+//   title: string;
+//   description: string;
+//   timestamp: number;
+//   status: string;
+//   collaborators: string[];
+//   tasks: string[];
+//   owner: boolean;
+// }
 
-interface GetTodosResponse {
-  todos: Todo[];
-}
+// interface GetTodosResponse {
+//   todos: Todo[];
+// }
 
-interface CreateTodoResponse {
-  message: string;
-  createdTodo: Todo;
-}
+// interface CreateTodoResponse {
+//   message: string;
+//   createdTodo: Todo;
+// }
 
-interface UpdateTodoResponse {
-  message: string;
-  updatedTodo: Todo;
-}
+// interface UpdateTodoRequest {
+//   id: string;
+//   status: string;
+// }
 
-interface DeleteTodoResponse {
-  message: string;
-}
+// interface UpdateTodoResponse {
+//   message: string;
+//   updatedTodo: Todo;
+// }
 
-export interface Message {
-  id: string;
-  userName: string;
-  text: string;
-}
+// interface DeleteTodoResponse {
+//   message: string;
+// }
+
+// export interface Message {
+//   id: string;
+//   userName: string;
+//   text: string;
+// }
 
 let url = 'http://localhost:3001/api/';
 if (process.env.NODE_ENV === 'production') {
@@ -107,10 +123,11 @@ export const api = createApi({
         body: newTodo
       })
     }),
-    updateTodo: builder.mutation<UpdateTodoResponse, string>({
-      query: id => ({
-        url: `todos/${id}`,
-        method: 'PATCH'
+    updateTodo: builder.mutation<UpdateTodoResponse, UpdateTodoRequest>({
+      query: updateData => ({
+        url: `todos/${updateData.id}`,
+        method: 'PATCH',
+        body: updateData
       })
     }),
     dbDeleteTodo: builder.mutation<DeleteTodoResponse, string>({

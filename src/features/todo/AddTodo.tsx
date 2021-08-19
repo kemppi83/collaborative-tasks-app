@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch } from '../../hooks/store';
 import { addTodo } from './todoSlice';
 import { usePostTodoMutation } from '../../app/services/api';
-import type { Todo } from '../../app/services/api';
+import type { Todo } from '../../app/models';
 
 const AddTodo = (): JSX.Element => {
   const [formState, setFormstate] = useState<Partial<Todo>>({

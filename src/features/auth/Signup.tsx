@@ -13,7 +13,7 @@ import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
 
 import { useSignupMutation } from '../../app/services/api';
-import type { SignupRequest } from '../../app/services/api';
+import type { SignupRequest } from '../../app/models';
 
 const PasswordInput = ({
   onChange

@@ -10,6 +10,8 @@ import {
   useDbDeleteTodoMutation
 } from '../../app/services/api';
 
+import type { Todo } from '../../app/models';
+
 /* TODO:
   - data.todos will be split to data.todos.own and data.todos.collaboration
     - render first the own and then the collab
@@ -44,7 +46,7 @@ const TodoList = (): JSX.Element => {
         socket.disconnect();
       }
     };
-  }, []);
+  }, [token]);
 
   // make a useEffect which calls getTodos and maps over the received todos and adds them to the state
   useEffect(() => {
@@ -57,10 +59,16 @@ const TodoList = (): JSX.Element => {
     }
   }, [data, dispatch, todos]);
 
-  const onChangeStatus = async (id: string) => {
-    dispatch(updateStatus({ todoId: id }));
+  const onChangeStatus = async (todo: Todo) => {
+    dispatch(updateStatus({ todoId: todo.id }));
+    console.log('status: ', todo.status);
     try {
-      await updateTodo(id).unwrap();
+      await updateTodo({
+        id: todo.id,
+        ...(todo.status === 'active'
+          ? { status: 'done' }
+          : { status: 'active' })
+      }).unwrap();
     } catch (err) {
       console.log(err.message);
     }
@@ -84,14 +92,14 @@ const TodoList = (): JSX.Element => {
           {todo.status === 'active' ? (
             <button
               className="button--done"
-              onClick={() => onChangeStatus(todo.id)}
+              onClick={() => onChangeStatus(todo)}
             >
               Mark as done
             </button>
           ) : (
             <button
               className="button--active"
-              onClick={() => onChangeStatus(todo.id)}
+              onClick={() => onChangeStatus(todo)}
             >
               Reactivate
             </button>

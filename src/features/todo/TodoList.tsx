@@ -3,6 +3,7 @@ import { io } from 'socket.io-client';
 import { useTodos } from '../../hooks/useTodos';
 import { useAppDispatch } from '../../hooks/store';
 import { addTodo, updateStatus, deleteTodo } from './todoSlice';
+import { useToken } from '../../hooks/useAuth';
 import {
   useGetTodosQuery,
   useUpdateTodoMutation,
@@ -23,9 +24,14 @@ const TodoList = (): JSX.Element => {
   const { data } = useGetTodosQuery();
   const [updateTodo] = useUpdateTodoMutation();
   const [dbDeleteTodo] = useDbDeleteTodoMutation();
+  const { token } = useToken();
 
   useEffect(() => {
-    const socket = io('http://localhost:3001');
+    const socket = io('http://localhost:3001', {
+      auth: {
+        token
+      }
+    });
 
     socket.emit('message', 'moi etupäästä');
 

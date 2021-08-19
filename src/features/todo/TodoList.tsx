@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import socketIOClient from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { useTodos } from '../../hooks/useTodos';
 import { useAppDispatch } from '../../hooks/store';
 import { addTodo, updateStatus, deleteTodo } from './todoSlice';
@@ -23,6 +23,22 @@ const TodoList = (): JSX.Element => {
   const { data } = useGetTodosQuery();
   const [updateTodo] = useUpdateTodoMutation();
   const [dbDeleteTodo] = useDbDeleteTodoMutation();
+
+  useEffect(() => {
+    const socket = io('http://localhost:3001');
+
+    socket.emit('message', 'moi etupäästä');
+
+    socket.on('error', (err: string) => {
+      console.log(err);
+    });
+
+    return () => {
+      if (socket) {
+        socket.disconnect();
+      }
+    };
+  }, []);
 
   // make a useEffect which calls getTodos and maps over the received todos and adds them to the state
   useEffect(() => {

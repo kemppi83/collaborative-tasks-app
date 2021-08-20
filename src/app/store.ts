@@ -4,13 +4,15 @@ import { api } from './services/api';
 import authReducer from '../features/auth/authSlice';
 import counterReducer from '../features/counter/counterSlice';
 import todoReducer from '../features/todo/todoSlice';
+import taskReducer from '../features/task/taskSlice';
 
 export const store = configureStore({
   reducer: {
     [api.reducerPath]: api.reducer,
     auth: authReducer,
     counter: counterReducer,
-    todo: todoReducer
+    todo: todoReducer,
+    task: taskReducer
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(api.middleware)

@@ -59,3 +59,14 @@ export interface Message {
   userName: string;
   text: string;
 }
+
+export interface Task {
+  id: string;
+  parent_todo: string;
+  parent_task?: string;
+  title: string;
+  description?: string;
+  timestamp: number;
+  status: string;
+  children: string[];
+}

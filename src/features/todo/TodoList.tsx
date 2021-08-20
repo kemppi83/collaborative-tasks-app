@@ -1,24 +1,16 @@
 import React, { useEffect } from 'react';
-import { io } from 'socket.io-client';
 import { useTodos } from '../../hooks/useTodos';
 import { useAppDispatch } from '../../hooks/store';
 import { addTodo, updateStatus, deleteTodo } from './todoSlice';
-import { useToken } from '../../hooks/useAuth';
 import {
   useGetTodosQuery,
   useUpdateTodoMutation,
   useDbDeleteTodoMutation
 } from '../../app/services/api';
+import SocketHandler from '../../utils/SocketHandler';
+import TaskList from '../task/TaskList';
 
 import type { Todo } from '../../app/models';
-
-/* TODO:
-  - data.todos will be split to data.todos.own and data.todos.collaboration
-    - render first the own and then the collab
-    - only own gets a delete button
-    - all todos will get 'add task' button
-    - all tasks of both todo types will get 'delete' and 'changestatus' buttons
-*/
 
 const TodoList = (): JSX.Element => {
   const { todos } = useTodos();
@@ -26,27 +18,7 @@ const TodoList = (): JSX.Element => {
   const { data } = useGetTodosQuery();
   const [updateTodo] = useUpdateTodoMutation();
   const [dbDeleteTodo] = useDbDeleteTodoMutation();
-  const { token } = useToken();
-
-  useEffect(() => {
-    const socket = io('http://localhost:3001', {
-      auth: {
-        token
-      }
-    });
-
-    socket.emit('message', 'moi etupäästä');
-
-    socket.on('error', (err: string) => {
-      console.log(err);
-    });
-
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-  }, [token]);
+  SocketHandler();
 
   // make a useEffect which calls getTodos and maps over the received todos and adds them to the state
   useEffect(() => {
@@ -89,6 +61,7 @@ const TodoList = (): JSX.Element => {
         <li key={todo.id} className={`todocard__${todo.status}`}>
           <p className="todocard__title">{todo.title}</p>
           <p className="todocard__text">{todo.description}</p>
+          <TaskList todoId={todo.id} />
           {todo.status === 'active' ? (
             <button
               className="button--done"
@@ -117,4 +90,3 @@ const TodoList = (): JSX.Element => {
 };
 
 export default TodoList;
-export {};

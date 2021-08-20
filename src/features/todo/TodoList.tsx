@@ -19,10 +19,8 @@ const TodoList = (): JSX.Element => {
   const { data } = useGetTodosQuery();
   const [updateTodo] = useUpdateTodoMutation();
   const [dbDeleteTodo] = useDbDeleteTodoMutation();
-  // SocketHandler();
   const { socketAddTask, socketUpdateTask, socketDeleteTask } = SocketHandler();
 
-  // make a useEffect which calls getTodos and maps over the received todos and adds them to the state
   useEffect(() => {
     if (data) {
       data.todos.forEach(serverTodo => {

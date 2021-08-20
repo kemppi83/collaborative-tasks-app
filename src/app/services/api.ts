@@ -12,68 +12,6 @@ import type {
   DeleteTodoResponse
 } from '../models';
 
-// export interface User {
-//   username: string;
-//   email: string;
-// }
-
-// export interface UserResponse {
-//   user: User;
-//   token: string;
-// }
-
-// export interface SignupRequest {
-//   username?: string;
-//   email: string;
-//   password: string;
-//   confirmPassword: string;
-// }
-
-// export interface LoginRequest {
-//   email: string;
-//   password: string;
-// }
-
-// export interface Todo {
-//   id: string;
-//   title: string;
-//   description: string;
-//   timestamp: number;
-//   status: string;
-//   collaborators: string[];
-//   tasks: string[];
-//   owner: boolean;
-// }
-
-// interface GetTodosResponse {
-//   todos: Todo[];
-// }
-
-// interface CreateTodoResponse {
-//   message: string;
-//   createdTodo: Todo;
-// }
-
-// interface UpdateTodoRequest {
-//   id: string;
-//   status: string;
-// }
-
-// interface UpdateTodoResponse {
-//   message: string;
-//   updatedTodo: Todo;
-// }
-
-// interface DeleteTodoResponse {
-//   message: string;
-// }
-
-// export interface Message {
-//   id: string;
-//   userName: string;
-//   text: string;
-// }
-
 let url = 'http://localhost:3001/api/';
 if (process.env.NODE_ENV === 'production') {
   url = 'Add url here when the server is deployed.';

@@ -3,7 +3,6 @@ import { io, Socket } from 'socket.io-client';
 import { useToken } from '../hooks/useAuth';
 import type { Task } from '../app/models';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
-import { useTodos } from '../hooks/useTodos';
 import { addTask, updateTask, deleteTask } from '../features/task/taskSlice';
 import { useAppDispatch } from '../hooks/store';
 import { useTasks } from '../hooks/useTasks';
@@ -56,7 +55,6 @@ const SocketHandler: SocketHandlerType = () => {
     }
 
     if (socketRef.current) {
-      console.log('täällä emitöidään init');
       socketRef.current.emit('init');
 
       socketRef.current.on('task:toClient', (tasksFromDB: Task) => {
@@ -66,14 +64,6 @@ const SocketHandler: SocketHandlerType = () => {
         if (!match) {
           dispatch(addTask({ task: tasksFromDB }));
         }
-        // tasksFromDB.forEach(task => {
-        //   const match = tasks.find(
-        //     (reduxTask: Task) => reduxTask.id === task.id
-        //   );
-        //   if (!match) {
-        //     dispatch(addTask({ task }));
-        //   }
-        // });
       });
 
       socketRef.current.on('task:serverUpdated', (task: Task) => {

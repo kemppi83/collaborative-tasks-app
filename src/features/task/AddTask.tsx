@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch } from '../../hooks/store';
 import { addTask } from './taskSlice';
 import type { Task } from '../../app/models';
-// import SocketHandler from '../../utils/SocketHandler';
 
 interface AddTaskProps {
   todoId: string;
@@ -17,7 +16,6 @@ const AddTask = ({ todoId, socketAddTask }: AddTaskProps): JSX.Element => {
   });
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
-  // const { socketAddTask } = SocketHandler();
 
   const handleChange = ({
     target: { name, value }

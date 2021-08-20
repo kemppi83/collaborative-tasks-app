@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTasks } from '../../hooks/useTasks';
 import { useAppDispatch } from '../../hooks/store';
-// import SocketHandler from '../../utils/SocketHandler';
 import { updateTask, deleteTask } from './taskSlice';
 
 import type { Task } from '../../app/models';
@@ -20,7 +19,6 @@ const TaskList = ({
   const [thisTodoTasks, setThisTodoTasks] = useState<Task[]>([]);
   const { tasks } = useTasks();
   const dispatch = useAppDispatch();
-  // const { socketUpdateTask, socketDeleteTask } = SocketHandler();
 
   useEffect(() => {
     const filteredTasks = tasks.filter(task => task.parent_todo === todoId);

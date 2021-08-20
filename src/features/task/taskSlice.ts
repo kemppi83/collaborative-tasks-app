@@ -27,19 +27,6 @@ const taskSlice = createSlice({
       updatedTasks.splice(updateIndex, 1, task);
       state.tasks = updatedTasks;
     },
-    // updateTaskStatus: (
-    //   state,
-    //   { payload: { taskId } }: PayloadAction<{ taskId: string }>
-    // ) => {
-    //   const updatedTasks = [...state.tasks];
-    //   const updateIndex = updatedTasks.findIndex(i => i.id === taskId);
-    //   if (updatedTasks[updateIndex].status === 'active') {
-    //     updatedTasks[updateIndex].status = 'done';
-    //   } else {
-    //     updatedTasks[updateIndex].status = 'active';
-    //   }
-    //   state.tasks = updatedTasks;
-    // },
     deleteTask: (
       state,
       { payload: { taskId } }: PayloadAction<{ taskId: string }>

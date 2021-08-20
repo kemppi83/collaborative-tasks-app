@@ -7,6 +7,11 @@ import {
   useUpdateTodoMutation,
   useDbDeleteTodoMutation
 } from '../../app/services/api';
+import SocketHandler from '../../utils/SocketHandler';
+import TaskList from '../task/TaskList';
+import AddTask from '../task/AddTask';
+
+import type { Todo } from '../../app/models';
 
 const TodoList = (): JSX.Element => {
   const { todos } = useTodos();
@@ -14,6 +19,8 @@ const TodoList = (): JSX.Element => {
   const { data } = useGetTodosQuery();
   const [updateTodo] = useUpdateTodoMutation();
   const [dbDeleteTodo] = useDbDeleteTodoMutation();
+  // SocketHandler();
+  const { socketAddTask, socketUpdateTask, socketDeleteTask } = SocketHandler();
 
   // make a useEffect which calls getTodos and maps over the received todos and adds them to the state
   useEffect(() => {
@@ -26,10 +33,16 @@ const TodoList = (): JSX.Element => {
     }
   }, [data, dispatch, todos]);
 
-  const onChangeStatus = async (id: string) => {
-    dispatch(updateStatus({ todoId: id }));
+  const onChangeStatus = async (todo: Todo) => {
+    dispatch(updateStatus({ todoId: todo.id }));
+    console.log('status: ', todo.status);
     try {
-      await updateTodo(id).unwrap();
+      await updateTodo({
+        id: todo.id,
+        ...(todo.status === 'active'
+          ? { status: 'done' }
+          : { status: 'active' })
+      }).unwrap();
     } catch (err) {
       console.log(err.message);
     }
@@ -49,18 +62,24 @@ const TodoList = (): JSX.Element => {
       {todos.map(todo => (
         <li key={todo.id} className={`todocard__${todo.status}`}>
           <p className="todocard__title">{todo.title}</p>
-          <p className="todocard__text">{todo.text}</p>
+          <p className="todocard__text">{todo.description}</p>
+          <TaskList
+            todoId={todo.id}
+            socketUpdateTask={socketUpdateTask}
+            socketDeleteTask={socketDeleteTask}
+          />
+          <AddTask todoId={todo.id} socketAddTask={socketAddTask} />
           {todo.status === 'active' ? (
             <button
               className="button--done"
-              onClick={() => onChangeStatus(todo.id)}
+              onClick={() => onChangeStatus(todo)}
             >
               Mark as done
             </button>
           ) : (
             <button
               className="button--active"
-              onClick={() => onChangeStatus(todo.id)}
+              onClick={() => onChangeStatus(todo)}
             >
               Reactivate
             </button>
@@ -78,4 +97,3 @@ const TodoList = (): JSX.Element => {
 };
 
 export default TodoList;
-export {};

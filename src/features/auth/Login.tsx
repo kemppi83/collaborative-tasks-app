@@ -13,7 +13,7 @@ import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
 
 import { useLoginMutation } from '../../app/services/api';
-import type { LoginRequest } from '../../app/services/api';
+import type { LoginRequest } from '../../app/models';
 
 interface stateType {
   from: { pathname: string };

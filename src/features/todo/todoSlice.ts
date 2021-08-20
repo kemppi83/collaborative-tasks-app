@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { Todo } from '../../app/services/api';
+import type { Todo } from '../../app/models';
 import type { RootState } from '../../app/store';
 
 interface TodosState {

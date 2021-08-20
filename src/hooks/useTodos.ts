@@ -8,9 +8,3 @@ export const useTodos = () => {
 
   return useMemo(() => ({ todos }), [todos]);
 };
-
-/* Seuraavaksi:
-  - tee todo-handlerit
-    - kopioi ne vanhan appin reactista (App.tsx)
-      - mut nyt ne menee todo komponentteihin
-*/

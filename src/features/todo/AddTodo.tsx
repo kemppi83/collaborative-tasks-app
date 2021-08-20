@@ -4,12 +4,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { useAppDispatch } from '../../hooks/store';
 import { addTodo } from './todoSlice';
 import { usePostTodoMutation } from '../../app/services/api';
-import type { Todo } from '../../app/services/api';
+import type { Todo } from '../../app/models';
 
 const AddTodo = (): JSX.Element => {
   const [formState, setFormstate] = useState<Partial<Todo>>({
     title: '',
-    text: ''
+    description: ''
   });
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
@@ -29,9 +29,14 @@ const AddTodo = (): JSX.Element => {
     const newTodo = {
       id: uuidv4(),
       title: formState.title,
-      ...(formState.text ? { text: formState.text } : { text: '' }),
+      ...(formState.description
+        ? { description: formState.description }
+        : { description: '' }),
       timestamp: Date.now(),
-      status: 'active'
+      status: 'active',
+      collaborators: [],
+      tasks: [],
+      owner: true
     } as Todo;
 
     setError('');
@@ -40,6 +45,11 @@ const AddTodo = (): JSX.Element => {
         todo: newTodo
       })
     );
+
+    setFormstate({
+      title: '',
+      description: ''
+    });
 
     try {
       const postedTodo = await postTodo(newTodo).unwrap();
@@ -63,12 +73,12 @@ const AddTodo = (): JSX.Element => {
         onChange={handleChange}
       />
 
-      <label htmlFor="text">Text:</label>
+      <label htmlFor="description">Text:</label>
       <input
-        data-testid="text"
+        data-testid="description"
         type="text"
-        name="text"
-        value={formState.text}
+        name="description"
+        value={formState.description}
         onChange={handleChange}
       />
 

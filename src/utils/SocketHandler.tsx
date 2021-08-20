@@ -4,8 +4,9 @@ import { useToken } from '../hooks/useAuth';
 import type { Task } from '../app/models';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
 import { useTodos } from '../hooks/useTodos';
-import { addTask } from '../features/task/taskSlice';
+import { addTask, updateTask, deleteTask } from '../features/task/taskSlice';
 import { useAppDispatch } from '../hooks/store';
+import { useTasks } from '../hooks/useTasks';
 
 let url: string;
 if (process.env.REACT_APP_SERVER_URL) {
@@ -15,40 +16,32 @@ if (process.env.REACT_APP_SERVER_URL) {
 }
 
 type SocketHandlerType = () => {
-  handleAddTask: (task: Task) => void;
-  handleUpdateTask: (task: Task) => void;
-  handleDeleteTask: (
-    taskId: string,
-    parentTodoId: string,
-    parentTaskId?: string
-  ) => void;
+  socketAddTask: (task: Task) => void;
+  socketUpdateTask: (task: Task) => void;
+  socketDeleteTask: (taskId: string, todoId: string) => void;
 };
 
 const SocketHandler: SocketHandlerType = () => {
   const socketRef = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
   const { token } = useToken();
-  const { todos } = useTodos();
   const dispatch = useAppDispatch();
+  const { tasks } = useTasks();
 
-  const handleAddTask = (newTask: Task): void => {
+  const socketAddTask = (newTask: Task): void => {
     if (socketRef.current) {
       socketRef.current.emit('task:add', newTask);
     }
   };
 
-  const handleUpdateTask = (updatedTask: Task): void => {
+  const socketUpdateTask = (updatedTask: Task): void => {
     if (socketRef.current) {
       socketRef.current.emit('task:update', updatedTask);
     }
   };
 
-  const handleDeleteTask = (
-    taskId: string,
-    parentTodoId: string,
-    parentTaskId?: string
-  ): void => {
+  const socketDeleteTask = (taskId: string, todoId: string): void => {
     if (socketRef.current) {
-      socketRef.current.emit('task:delete', taskId, parentTodoId, parentTaskId);
+      socketRef.current.emit('task:delete', taskId, todoId);
     }
   };
 
@@ -63,11 +56,36 @@ const SocketHandler: SocketHandlerType = () => {
     }
 
     if (socketRef.current) {
+      console.log('täällä emitöidään init');
       socketRef.current.emit('init');
 
-      socketRef.current.on('task:new', (task: Task) => {
-        console.log({ task });
-        dispatch(addTask({ task }));
+      socketRef.current.on('task:toClient', (tasksFromDB: Task) => {
+        const match = tasks.find(
+          (reduxTask: Task) => reduxTask.id === tasksFromDB.id
+        );
+        if (!match) {
+          dispatch(addTask({ task: tasksFromDB }));
+        }
+        // tasksFromDB.forEach(task => {
+        //   const match = tasks.find(
+        //     (reduxTask: Task) => reduxTask.id === task.id
+        //   );
+        //   if (!match) {
+        //     dispatch(addTask({ task }));
+        //   }
+        // });
+      });
+
+      socketRef.current.on('task:serverUpdated', (task: Task) => {
+        dispatch(updateTask({ task }));
+      });
+
+      socketRef.current.on('task:serverDeleted', (taskId: string) => {
+        dispatch(deleteTask({ taskId }));
+      });
+
+      socketRef.current.on('error', (err: Error) => {
+        console.error(err);
       });
     }
 
@@ -80,9 +98,9 @@ const SocketHandler: SocketHandlerType = () => {
   }, [token]);
 
   return {
-    handleAddTask,
-    handleUpdateTask,
-    handleDeleteTask
+    socketAddTask,
+    socketUpdateTask,
+    socketDeleteTask
   };
 };
 

@@ -65,7 +65,6 @@ export interface Task {
   parent_todo: string;
   parent_task?: string;
   title: string;
-  description?: string;
   timestamp: number;
   status: string;
   children: string[];

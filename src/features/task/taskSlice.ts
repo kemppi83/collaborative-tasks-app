@@ -18,19 +18,28 @@ const taskSlice = createSlice({
     addTask: (state, { payload: { task } }: PayloadAction<{ task: Task }>) => {
       state.tasks.push(task);
     },
-    updateTaskStatus: (
+    updateTask: (
       state,
-      { payload: { taskId } }: PayloadAction<{ taskId: string }>
+      { payload: { task } }: PayloadAction<{ task: Task }>
     ) => {
       const updatedTasks = [...state.tasks];
-      const updateIndex = updatedTasks.findIndex(i => i.id === taskId);
-      if (updatedTasks[updateIndex].status === 'active') {
-        updatedTasks[updateIndex].status = 'done';
-      } else {
-        updatedTasks[updateIndex].status = 'active';
-      }
+      const updateIndex = updatedTasks.findIndex(i => i.id === task.id);
+      updatedTasks.splice(updateIndex, 1, task);
       state.tasks = updatedTasks;
     },
+    // updateTaskStatus: (
+    //   state,
+    //   { payload: { taskId } }: PayloadAction<{ taskId: string }>
+    // ) => {
+    //   const updatedTasks = [...state.tasks];
+    //   const updateIndex = updatedTasks.findIndex(i => i.id === taskId);
+    //   if (updatedTasks[updateIndex].status === 'active') {
+    //     updatedTasks[updateIndex].status = 'done';
+    //   } else {
+    //     updatedTasks[updateIndex].status = 'active';
+    //   }
+    //   state.tasks = updatedTasks;
+    // },
     deleteTask: (
       state,
       { payload: { taskId } }: PayloadAction<{ taskId: string }>
@@ -44,7 +53,7 @@ const taskSlice = createSlice({
   }
 });
 
-export const { addTask, updateTaskStatus, deleteTask, resetTasks } =
+export const { addTask, updateTask, deleteTask, resetTasks } =
   taskSlice.actions;
 export default taskSlice.reducer;
 export const selectCurrentUserTasks = (state: RootState): Task[] =>

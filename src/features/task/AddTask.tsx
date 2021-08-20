@@ -1,67 +1,59 @@
-// TÄMÄ PITÄÄ MUOKATA KOKONAAN TASKEJA VARTEN
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useAppDispatch } from '../../hooks/store';
-import { addTodo } from './todoSlice';
-import { usePostTodoMutation } from '../../app/services/api';
-import type { Todo } from '../../app/models';
+import { addTask } from './taskSlice';
+import type { Task } from '../../app/models';
+// import SocketHandler from '../../utils/SocketHandler';
 
-const AddTodo = (): JSX.Element => {
-  const [formState, setFormstate] = useState<Partial<Todo>>({
-    title: '',
-    description: ''
+interface AddTaskProps {
+  todoId: string;
+  socketAddTask: (task: Task) => void;
+}
+
+const AddTask = ({ todoId, socketAddTask }: AddTaskProps): JSX.Element => {
+  const [formState, setFormstate] = useState<Partial<Task>>({
+    title: ''
   });
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
-  const [postTodo] = usePostTodoMutation();
+  // const { socketAddTask } = SocketHandler();
 
   const handleChange = ({
     target: { name, value }
   }: React.ChangeEvent<HTMLInputElement>) =>
     setFormstate(prev => ({ ...prev, [name]: value }));
 
-  const todoSubmitHandler = async (event: React.FormEvent) => {
+  const taskSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!formState.title) {
-      return setError('Todo title is required!');
+      return setError('Task title is required!');
     }
 
-    const newTodo = {
+    const newTask = {
       id: uuidv4(),
       title: formState.title,
-      ...(formState.description
-        ? { description: formState.description }
-        : { description: '' }),
       timestamp: Date.now(),
       status: 'active',
-      collaborators: [],
-      tasks: [],
-      owner: true
-    } as Todo;
+      parent_todo: todoId
+    } as Task;
 
     setError('');
     dispatch(
-      addTodo({
-        todo: newTodo
+      addTask({
+        task: newTask
       })
     );
 
     setFormstate({
-      title: '',
-      description: ''
+      title: ''
     });
 
-    try {
-      const postedTodo = await postTodo(newTodo).unwrap();
-      console.log(postedTodo);
-    } catch (err) {
-      console.log(err.message);
-    }
+    socketAddTask(newTask);
   };
 
   return (
-    <form data-testid="todo-form" onSubmit={todoSubmitHandler}>
+    <form data-testid="todo-form" onSubmit={taskSubmitHandler}>
       <h3>Register New ToDo</h3>
 
       <label htmlFor="title">Title:</label>
@@ -74,20 +66,11 @@ const AddTodo = (): JSX.Element => {
         onChange={handleChange}
       />
 
-      <label htmlFor="description">Text:</label>
-      <input
-        data-testid="description"
-        type="text"
-        name="description"
-        value={formState.description}
-        onChange={handleChange}
-      />
-
       <button type="submit" data-testid="submit">
-        Add todo
+        Add task
       </button>
     </form>
   );
 };
 
-export default AddTodo;
+export default AddTask;

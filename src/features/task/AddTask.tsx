@@ -52,7 +52,7 @@ const AddTask = ({ todoId, socketAddTask }: AddTaskProps): JSX.Element => {
 
   return (
     <form data-testid="todo-form" onSubmit={taskSubmitHandler}>
-      <h3>Register New ToDo</h3>
+      <h3>Register New Task</h3>
 
       <label htmlFor="title">Title:</label>
       <input

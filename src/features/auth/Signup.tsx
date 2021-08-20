@@ -1,13 +1,4 @@
 import * as React from 'react';
-import {
-  Input,
-  HStack,
-  VStack,
-  Button,
-  Center,
-  Box,
-  useToast
-} from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
@@ -15,59 +6,11 @@ import { setCredentials } from './authSlice';
 import { useSignupMutation } from '../../app/services/api';
 import type { SignupRequest } from '../../app/models';
 
-const PasswordInput = ({
-  onChange
-}: {
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}) => {
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
-
-  return (
-    <HStack justifyContent="center">
-      <VStack spacing="2">
-        <Input
-          pr="4.5rem"
-          onChange={onChange}
-          name="username"
-          type="text"
-          placeholder="Username"
-        />
-        <Input
-          pr="4.5rem"
-          onChange={onChange}
-          name="email"
-          type="email"
-          placeholder="Email"
-        />
-        <Input
-          pr="4.5rem"
-          type={show ? 'text' : 'password'}
-          placeholder="Enter password"
-          name={'password'}
-          onChange={onChange}
-        />
-        <Input
-          pr="4.5rem"
-          type={show ? 'text' : 'password'}
-          placeholder="Confirm password"
-          name={'confirmPassword'}
-          onChange={onChange}
-        />
-      </VStack>
-      <Box>
-        <Button h="1.75rem" size="sm" onClick={handleClick} marginTop="auto">
-          {show ? 'Hide' : 'Show'}
-        </Button>
-      </Box>
-    </HStack>
-  );
-};
-
 export const Signup = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { push } = useHistory();
-  const toast = useToast();
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
 
   const [formState, setFormstate] = React.useState<SignupRequest>({
     username: '',
@@ -83,39 +26,56 @@ export const Signup = (): JSX.Element => {
   }: React.ChangeEvent<HTMLInputElement>) =>
     setFormstate(prev => ({ ...prev, [name]: value }));
 
+  const signupSubmitHandler = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const user = await signup(formState).unwrap();
+      dispatch(setCredentials(user));
+      push('/');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <Center h="500px">
-      <VStack spacing="2">
-        <Box width="500px">
-          Enter your email and optional username (email will be used as your
-          username if left blank).
-        </Box>
-        <Box>
-          <PasswordInput onChange={handleChange} />
-        </Box>
-        <Button
-          width="200px"
-          onClick={async () => {
-            try {
-              const user = await signup(formState).unwrap();
-              dispatch(setCredentials(user));
-              push('/');
-            } catch (err) {
-              toast({
-                status: 'error',
-                title: 'Error',
-                description: 'Oh no, there was an error!',
-                isClosable: true
-              });
-            }
-          }}
-          colorScheme="green"
-          isLoading={isLoading}
-        >
+    <div>
+      <div>
+        Enter your email and optional username (email will be used as your
+        username if left blank).
+      </div>
+      <form data-testid="signup-form" onSubmit={signupSubmitHandler}>
+        <input
+          name="username"
+          type="text"
+          placeholder="Username"
+          onChange={handleChange}
+        />
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          onChange={handleChange}
+        />
+        <input
+          name={'password'}
+          type={show ? 'text' : 'password'}
+          placeholder="Enter password"
+          onChange={handleChange}
+        />
+        <input
+          name={'confirmPassword'}
+          type={show ? 'text' : 'password'}
+          placeholder="Confirm password"
+          onChange={handleChange}
+        />
+        <button type="button" onClick={handleClick}>
+          {show ? 'Hide' : 'Show'}
+        </button>
+        <button type="submit" data-testid="submit">
           Sign Up
-        </Button>
-      </VStack>
-    </Center>
+        </button>
+      </form>
+    </div>
   );
 };
 

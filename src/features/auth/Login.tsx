@@ -1,13 +1,4 @@
 import * as React from 'react';
-import {
-  Input,
-  InputGroup,
-  InputRightElement,
-  VStack,
-  Button,
-  Center,
-  useToast
-} from '@chakra-ui/react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
@@ -19,39 +10,12 @@ interface stateType {
   from: { pathname: string };
 }
 
-const PasswordInput = ({
-  name,
-  onChange
-}: {
-  name: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}) => {
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
-
-  return (
-    <InputGroup size="md">
-      <Input
-        pr="4.5rem"
-        type={show ? 'text' : 'password'}
-        placeholder="Enter password"
-        name={name}
-        onChange={onChange}
-      />
-      <InputRightElement width="4.5rem">
-        <Button h="1.75rem" size="sm" onClick={handleClick}>
-          {show ? 'Hide' : 'Show'}
-        </Button>
-      </InputRightElement>
-    </InputGroup>
-  );
-};
-
 export const Login = (): JSX.Element => {
   const { state } = useLocation<stateType>();
   const dispatch = useAppDispatch();
   const { push } = useHistory();
-  const toast = useToast();
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
 
   const [formState, setFormstate] = React.useState<LoginRequest>({
     email: '',
@@ -65,51 +29,53 @@ export const Login = (): JSX.Element => {
   }: React.ChangeEvent<HTMLInputElement>) =>
     setFormstate(prev => ({ ...prev, [name]: value }));
 
-  return (
-    <Center h="500px">
-      <VStack spacing="4">
-        <InputGroup>
-          <Input
-            onChange={handleChange}
-            name="email"
-            type="text"
-            placeholder="Email"
-          />
-        </InputGroup>
+  const loginSubmitHandler = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const user = await login(formState).unwrap();
+      dispatch(setCredentials(user));
+      console.log('login: ', user);
+      localStorage.setItem('token', user.token);
+      let returnUrl = '/';
+      if (state && state.from && state.from.pathname) {
+        returnUrl = state.from.pathname;
+      }
+      push(returnUrl);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-        <InputGroup>
-          <PasswordInput onChange={handleChange} name="password" />
-        </InputGroup>
-        <Button
-          isFullWidth
-          onClick={async () => {
-            try {
-              const user = await login(formState).unwrap();
-              dispatch(setCredentials(user));
-              console.log('login: ', user);
-              localStorage.setItem('token', user.token);
-              let returnUrl = '/';
-              if (state && state.from && state.from.pathname) {
-                returnUrl = state.from.pathname;
-              }
-              push(returnUrl);
-            } catch (err) {
-              console.log(err);
-              toast({
-                status: 'error',
-                title: 'Error',
-                description: 'Oh no, there was an error!',
-                isClosable: true
-              });
-            }
-          }}
-          colorScheme="green"
-          isLoading={isLoading}
-        >
-          Login
-        </Button>
-      </VStack>
-    </Center>
+  return (
+    <form data-testid="login-form" onSubmit={loginSubmitHandler}>
+      <input
+        onChange={handleChange}
+        name="email"
+        type="text"
+        placeholder="Email"
+      />
+
+      <input
+        onChange={handleChange}
+        name="password"
+        type="password"
+        placeholder="Password"
+      />
+
+      <input
+        type={show ? 'text' : 'password'}
+        placeholder="Enter password"
+        name="password"
+        onChange={handleChange}
+      />
+      <button type="button" onClick={handleClick}>
+        {show ? 'Hide' : 'Show'}
+      </button>
+
+      <button type="submit" data-testid="submit">
+        Login
+      </button>
+    </form>
   );
 };
 

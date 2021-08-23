@@ -22,7 +22,7 @@ export const Login = (): JSX.Element => {
     password: ''
   });
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const handleChange = ({
     target: { name, value }
@@ -47,30 +47,29 @@ export const Login = (): JSX.Element => {
   };
 
   return (
-    <form data-testid="login-form" onSubmit={loginSubmitHandler}>
+    <form
+      className="grid grid-cols-1 gap-6 max-w-sm mx-auto"
+      onSubmit={loginSubmitHandler}
+    >
       <input
         onChange={handleChange}
         name="email"
-        type="text"
+        type="email"
         placeholder="Email"
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
       />
-
-      <input
-        onChange={handleChange}
-        name="password"
-        type="password"
-        placeholder="Password"
-      />
-
-      <input
-        type={show ? 'text' : 'password'}
-        placeholder="Enter password"
-        name="password"
-        onChange={handleChange}
-      />
-      <button type="button" onClick={handleClick}>
-        {show ? 'Hide' : 'Show'}
-      </button>
+      <div className="flex w-auto">
+        <input
+          type={show ? 'text' : 'password'}
+          placeholder="Enter password"
+          name="password"
+          onChange={handleChange}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
+        />
+        <button type="button" onClick={handleClick} className="p-1">
+          {show ? 'Hide' : 'Show'}
+        </button>
+      </div>
 
       <button type="submit" data-testid="submit">
         Login

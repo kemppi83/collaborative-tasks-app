@@ -56,7 +56,7 @@ const TodoList = (): JSX.Element => {
   };
 
   return (
-    <ul>
+    <ul className="flex flex-col">
       {todos.map(todo => (
         <li key={todo.id} className={`todocard__${todo.status}`}>
           <p className="todocard__title">{todo.title}</p>

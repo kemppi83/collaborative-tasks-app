@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
@@ -14,10 +14,10 @@ export const Login = (): JSX.Element => {
   const { state } = useLocation<stateType>();
   const dispatch = useAppDispatch();
   const { push } = useHistory();
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
 
-  const [formState, setFormstate] = React.useState<LoginRequest>({
+  const [formState, setFormstate] = useState<LoginRequest>({
     email: '',
     password: ''
   });
@@ -26,10 +26,10 @@ export const Login = (): JSX.Element => {
 
   const handleChange = ({
     target: { name, value }
-  }: React.ChangeEvent<HTMLInputElement>) =>
+  }: ChangeEvent<HTMLInputElement>) =>
     setFormstate(prev => ({ ...prev, [name]: value }));
 
-  const loginSubmitHandler = async (event: React.FormEvent) => {
+  const loginSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();
     try {
       const user = await login(formState).unwrap();

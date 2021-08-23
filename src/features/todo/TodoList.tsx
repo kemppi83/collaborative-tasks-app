@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTodos } from '../../hooks/useTodos';
 import { useAppDispatch } from '../../hooks/store';
 import { addTodo, updateStatus, deleteTodo } from './todoSlice';
@@ -20,6 +20,7 @@ const TodoList = (): JSX.Element => {
   const [updateTodo] = useUpdateTodoMutation();
   const [dbDeleteTodo] = useDbDeleteTodoMutation();
   const { socketAddTask, socketUpdateTask, socketDeleteTask } = SocketHandler();
+  const [showTodo, setShowTodo] = useState<string[]>([]);
 
   useEffect(() => {
     if (data) {
@@ -55,18 +56,46 @@ const TodoList = (): JSX.Element => {
     dispatch(deleteTodo({ todoId: id }));
   };
 
+  const handleExpandTodo = (id: string) => {
+    const copyShowList = [...showTodo];
+    if (showTodo.includes(id)) {
+      const deleteIndex = copyShowList.findIndex(i => i === id);
+      copyShowList.splice(deleteIndex, 1);
+    } else {
+      copyShowList.push(id);
+    }
+    setShowTodo(copyShowList);
+  };
+
   return (
     <ul className="flex flex-col">
       {todos.map(todo => (
         <li key={todo.id} className={`todocard__${todo.status}`}>
           <p className="todocard__title">{todo.title}</p>
           <p className="todocard__text">{todo.description}</p>
-          <TaskList
-            todoId={todo.id}
-            socketUpdateTask={socketUpdateTask}
-            socketDeleteTask={socketDeleteTask}
-          />
-          <AddTask todoId={todo.id} socketAddTask={socketAddTask} />
+          {showTodo.includes(todo.id) ? (
+            <>
+              <button
+                className="button--delete"
+                onClick={() => handleExpandTodo(todo.id)}
+              >
+                Hide details
+              </button>
+              <TaskList
+                todoId={todo.id}
+                socketUpdateTask={socketUpdateTask}
+                socketDeleteTask={socketDeleteTask}
+              />
+              <AddTask todoId={todo.id} socketAddTask={socketAddTask} />
+            </>
+          ) : (
+            <button
+              className="button--delete"
+              onClick={() => handleExpandTodo(todo.id)}
+            >
+              Show details
+            </button>
+          )}
           {todo.status === 'active' ? (
             <button
               className="button--done"

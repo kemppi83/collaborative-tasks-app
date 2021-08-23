@@ -76,7 +76,7 @@ const TodoList = (): JSX.Element => {
           {showTodo.includes(todo.id) ? (
             <>
               <button
-                className="button--delete"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={() => handleExpandTodo(todo.id)}
               >
                 Hide details
@@ -90,7 +90,7 @@ const TodoList = (): JSX.Element => {
             </>
           ) : (
             <button
-              className="button--delete"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => handleExpandTodo(todo.id)}
             >
               Show details
@@ -98,21 +98,21 @@ const TodoList = (): JSX.Element => {
           )}
           {todo.status === 'active' ? (
             <button
-              className="button--done"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => onChangeStatus(todo)}
             >
               Mark as done
             </button>
           ) : (
             <button
-              className="button--active"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={() => onChangeStatus(todo)}
             >
               Reactivate
             </button>
           )}
           <button
-            className="button--delete"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => onDeleteTodo(todo.id)}
           >
             Delete

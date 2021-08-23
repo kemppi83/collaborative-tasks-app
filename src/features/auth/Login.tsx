@@ -1,13 +1,4 @@
-import * as React from 'react';
-import {
-  Input,
-  InputGroup,
-  InputRightElement,
-  VStack,
-  Button,
-  Center,
-  useToast
-} from '@chakra-ui/react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
@@ -19,97 +10,71 @@ interface stateType {
   from: { pathname: string };
 }
 
-const PasswordInput = ({
-  name,
-  onChange
-}: {
-  name: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}) => {
-  const [show, setShow] = React.useState(false);
-  const handleClick = () => setShow(!show);
-
-  return (
-    <InputGroup size="md">
-      <Input
-        pr="4.5rem"
-        type={show ? 'text' : 'password'}
-        placeholder="Enter password"
-        name={name}
-        onChange={onChange}
-      />
-      <InputRightElement width="4.5rem">
-        <Button h="1.75rem" size="sm" onClick={handleClick}>
-          {show ? 'Hide' : 'Show'}
-        </Button>
-      </InputRightElement>
-    </InputGroup>
-  );
-};
-
 export const Login = (): JSX.Element => {
   const { state } = useLocation<stateType>();
   const dispatch = useAppDispatch();
   const { push } = useHistory();
-  const toast = useToast();
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
 
-  const [formState, setFormstate] = React.useState<LoginRequest>({
+  const [formState, setFormstate] = useState<LoginRequest>({
     email: '',
     password: ''
   });
 
-  const [login, { isLoading }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const handleChange = ({
     target: { name, value }
-  }: React.ChangeEvent<HTMLInputElement>) =>
+  }: ChangeEvent<HTMLInputElement>) =>
     setFormstate(prev => ({ ...prev, [name]: value }));
 
-  return (
-    <Center h="500px">
-      <VStack spacing="4">
-        <InputGroup>
-          <Input
-            onChange={handleChange}
-            name="email"
-            type="text"
-            placeholder="Email"
-          />
-        </InputGroup>
+  const loginSubmitHandler = async (event: FormEvent) => {
+    event.preventDefault();
+    try {
+      const user = await login(formState).unwrap();
+      dispatch(setCredentials(user));
+      console.log('login: ', user);
+      localStorage.setItem('token', user.token);
+      let returnUrl = '/';
+      if (state && state.from && state.from.pathname) {
+        returnUrl = state.from.pathname;
+      }
+      push(returnUrl);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-        <InputGroup>
-          <PasswordInput onChange={handleChange} name="password" />
-        </InputGroup>
-        <Button
-          isFullWidth
-          onClick={async () => {
-            try {
-              const user = await login(formState).unwrap();
-              dispatch(setCredentials(user));
-              console.log('login: ', user);
-              localStorage.setItem('token', user.token);
-              let returnUrl = '/';
-              if (state && state.from && state.from.pathname) {
-                returnUrl = state.from.pathname;
-              }
-              push(returnUrl);
-            } catch (err) {
-              console.log(err);
-              toast({
-                status: 'error',
-                title: 'Error',
-                description: 'Oh no, there was an error!',
-                isClosable: true
-              });
-            }
-          }}
-          colorScheme="green"
-          isLoading={isLoading}
-        >
-          Login
-        </Button>
-      </VStack>
-    </Center>
+  return (
+    <form
+      className="grid grid-cols-1 gap-6 max-w-sm mx-auto"
+      onSubmit={loginSubmitHandler}
+    >
+      <input
+        onChange={handleChange}
+        name="email"
+        type="email"
+        placeholder="Email"
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
+      />
+      <div className="flex w-auto">
+        <input
+          type={show ? 'text' : 'password'}
+          placeholder="Enter password"
+          name="password"
+          onChange={handleChange}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
+        />
+        <button type="button" onClick={handleClick} className="p-1">
+          {show ? 'Hide' : 'Show'}
+        </button>
+      </div>
+
+      <button type="submit" data-testid="submit">
+        Login
+      </button>
+    </form>
   );
 };
 

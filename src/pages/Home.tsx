@@ -7,8 +7,8 @@ const Home = (): JSX.Element => {
   return (
     <>
       {/* <Nav /> */}
-      <AddTodo />
       <TodoList />
+      <AddTodo />
     </>
   );
 };

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { HStack, Button } from '@chakra-ui/react';
 import { useAuth } from '../../hooks/useAuth';
 import { useAppDispatch } from '../../hooks/store';
 import { resetTodos } from '../../features/todo/todoSlice';
@@ -19,26 +18,53 @@ const Nav = (): JSX.Element => {
   };
 
   return (
-    <header className="App-header">
-      <h1>Welcome to Collaborative Tasks!</h1>
-      {user ? (
-        <>
-          <p>Hello {user ? user.username : null}</p>
-          <Button h="1.75rem" size="sm" onClick={logoutHandler}>
-            Logout
-          </Button>
-        </>
-      ) : (
-        <HStack>
-          <Button h="1.75rem" size="sm" onClick={() => push('/login')}>
-            Login
-          </Button>
-          <Button h="1.75rem" size="sm" onClick={() => push('/signup')}>
-            Sign Up
-          </Button>
-        </HStack>
-      )}
-    </header>
+    <nav className="flex items-center justify-between flex-wrap bg-teal p-6">
+      <div className="flex items-center flex-no-shrink mr-6">
+        <span className="font-semibold text-xl tracking-tight">
+          Collaborative Tasks
+        </span>
+      </div>
+      <div className="w-full block flex-grow md:flex md:items-center md:w-auto">
+        {user ? (
+          <div className="text-sm md:flex-grow">
+            <p className="block mt-4 md:inline-block md:mt-0 text-teal-lighter mr-4">
+              {user.username ? `Hello ${user.username}!` : null}
+            </p>
+            <button
+              type="button"
+              onClick={() => push('/')}
+              className="block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white mr-4"
+            >
+              Home
+            </button>
+            <button
+              type="button"
+              onClick={logoutHandler}
+              className="block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white mr-4"
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <div className="text-sm md:flex-grow">
+            <button
+              type="button"
+              onClick={() => push('/login')}
+              className="block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white mr-4"
+            >
+              Login
+            </button>
+            <button
+              type="button"
+              onClick={() => push('/signup')}
+              className="block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white mr-4"
+            >
+              Sign Up
+            </button>
+          </div>
+        )}
+      </div>
+    </nav>
   );
 };
 

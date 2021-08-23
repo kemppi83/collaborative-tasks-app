@@ -8,10 +8,16 @@ import { useAppDispatch } from '../hooks/store';
 import { useTasks } from '../hooks/useTasks';
 
 let url: string;
-if (process.env.REACT_APP_SERVER_URL) {
-  url = process.env.REACT_APP_SERVER_URL;
+if (process.env.NODE_ENV === 'production') {
+  if (!process.env.REACT_APP_SERVER_URL_PROD) {
+    throw new Error('Server URL not provided');
+  }
+  url = process.env.REACT_APP_SERVER_URL_PROD;
 } else {
-  throw new Error('SERVER_URL environment variable is not set');
+  if (!process.env.REACT_APP_SERVER_URL_DEV) {
+    throw new Error('Server URL not provided');
+  }
+  url = process.env.REACT_APP_SERVER_URL_DEV;
 }
 
 type SocketHandlerType = () => {

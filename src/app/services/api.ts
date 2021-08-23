@@ -12,9 +12,17 @@ import type {
   DeleteTodoResponse
 } from '../models';
 
-let url = 'http://localhost:3001/api/';
+let url: string;
 if (process.env.NODE_ENV === 'production') {
-  url = 'Add url here when the server is deployed.';
+  if (!process.env.REACT_APP_SERVER_URL_PROD) {
+    throw new Error('Server URL not provided');
+  }
+  url = `${process.env.REACT_APP_SERVER_URL_PROD}/api`;
+} else {
+  if (!process.env.REACT_APP_SERVER_URL_DEV) {
+    throw new Error('Server URL not provided');
+  }
+  url = `${process.env.REACT_APP_SERVER_URL_DEV}/api`;
 }
 
 export const api = createApi({

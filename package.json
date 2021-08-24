@@ -15,6 +15,7 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-redux": "^7.1.18",
     "@types/react-router-dom": "^5.1.8",
+    "@types/uuid": "^8.3.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.4",
@@ -48,7 +49,6 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss7-compat": "^2.2.7",
-    "@types/uuid": "^8.3.1",
     "autoprefixer": "^9",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",

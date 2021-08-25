@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTodos } from '../../hooks/useTodos';
 import { useAppDispatch } from '../../hooks/store';
-import { addTodo, updateStatus, deleteTodo } from './todoSlice';
+import { addTodo, deleteTodo } from './todoSlice';
 import {
   useGetTodosQuery,
   useUpdateTodoMutation,

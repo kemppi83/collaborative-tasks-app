@@ -7,19 +7,31 @@ import {
   useUpdateTodoMutation,
   useDbDeleteTodoMutation
 } from '../../app/services/api';
-import SocketHandler from '../../utils/SocketHandler';
 import TaskList from '../task/TaskList';
 import AddTask from '../task/AddTask';
 
-import type { Todo } from '../../app/models';
+import type { Todo, Task } from '../../app/models';
 
-const TodoList = (): JSX.Element => {
+interface TodoListProps {
+  socketAddTask: (task: Task) => void;
+  socketUpdateTask: (task: Task) => void;
+  socketDeleteTask: (taskId: string, todoId: string) => void;
+  socketUpdateTodo: (todo: Todo) => void;
+  socketDeleteTodo: (todoId: string) => void;
+}
+
+const TodoList = ({
+  socketAddTask,
+  socketUpdateTask,
+  socketDeleteTask,
+  socketUpdateTodo,
+  socketDeleteTodo
+}: TodoListProps): JSX.Element => {
   const { todos } = useTodos();
   const dispatch = useAppDispatch();
   const { data } = useGetTodosQuery();
   const [updateTodo] = useUpdateTodoMutation();
   const [dbDeleteTodo] = useDbDeleteTodoMutation();
-  const { socketAddTask, socketUpdateTask, socketDeleteTask } = SocketHandler();
   const [showTodo, setShowTodo] = useState<string[]>([]);
 
   useEffect(() => {
@@ -30,10 +42,11 @@ const TodoList = (): JSX.Element => {
         }
       });
     }
-  }, [data, dispatch, todos]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   const onChangeStatus = async (todo: Todo) => {
-    dispatch(updateStatus({ todoId: todo.id }));
+    // dispatch(updateStatus({ todoId: todo.id }));
     console.log('status: ', todo.status);
     try {
       await updateTodo({
@@ -45,6 +58,7 @@ const TodoList = (): JSX.Element => {
     } catch (err) {
       console.log(err.message);
     }
+    socketUpdateTodo(todo);
   };
 
   const onDeleteTodo = async (id: string) => {
@@ -54,6 +68,7 @@ const TodoList = (): JSX.Element => {
       console.log(err.message);
     }
     dispatch(deleteTodo({ todoId: id }));
+    socketDeleteTodo(id);
   };
 
   const handleExpandTodo = (id: string) => {

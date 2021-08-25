@@ -25,6 +25,8 @@ if (process.env.NODE_ENV === 'production') {
   url = `${process.env.REACT_APP_SERVER_URL_DEV}/api`;
 }
 
+console.log(url);
+
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: url,

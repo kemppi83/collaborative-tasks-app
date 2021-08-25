@@ -6,10 +6,15 @@ import { addTodo } from './todoSlice';
 import { usePostTodoMutation } from '../../app/services/api';
 import type { Todo } from '../../app/models';
 
-const AddTodo = (): JSX.Element => {
+interface AddTodoProps {
+  socketAddTodo: (todo: Todo) => void;
+}
+
+const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
   const [formState, setFormstate] = useState<Partial<Todo>>({
     title: '',
-    description: ''
+    description: '',
+    collaboratorString: ''
   });
   const [error, setError] = useState('');
   const dispatch = useAppDispatch();
@@ -25,6 +30,7 @@ const AddTodo = (): JSX.Element => {
     if (!formState.title) {
       return setError('Todo title is required!');
     }
+    console.log(formState.collaboratorString);
 
     const newTodo = {
       id: uuidv4(),
@@ -34,7 +40,9 @@ const AddTodo = (): JSX.Element => {
         : { description: '' }),
       timestamp: Date.now(),
       status: 'active',
-      collaborators: [],
+      ...(formState.collaboratorString
+        ? { collaborators: formState.collaboratorString.split(' ') }
+        : { collaborators: [] }),
       tasks: [],
       owner: true
     } as Todo;
@@ -48,8 +56,11 @@ const AddTodo = (): JSX.Element => {
 
     setFormstate({
       title: '',
-      description: ''
+      description: '',
+      collaboratorString: ''
     });
+
+    socketAddTodo(newTodo);
 
     try {
       const postedTodo = await postTodo(newTodo).unwrap();
@@ -60,7 +71,10 @@ const AddTodo = (): JSX.Element => {
   };
 
   return (
-    <form data-testid="todo-form" onSubmit={todoSubmitHandler}>
+    <form
+      className="grid grid-cols-1 gap-1 max-w-sm mx-auto"
+      onSubmit={todoSubmitHandler}
+    >
       <h3>Register New ToDo</h3>
 
       <label htmlFor="title">Title:</label>
@@ -82,7 +96,20 @@ const AddTodo = (): JSX.Element => {
         onChange={handleChange}
       />
 
-      <button type="submit" data-testid="submit">
+      <label htmlFor="collaboratorString">
+        Collaborators (email addresses, space separated):
+      </label>
+      <input
+        type="text"
+        name="collaboratorString"
+        value={formState.collaboratorString}
+        onChange={handleChange}
+      />
+
+      <button
+        type="submit"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
         Add todo
       </button>
     </form>

@@ -64,7 +64,10 @@ const AddTask = ({ todoId, socketAddTask }: AddTaskProps): JSX.Element => {
         onChange={handleChange}
       />
 
-      <button type="submit" data-testid="submit">
+      <button
+        type="submit"
+        className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
+      >
         Add task
       </button>
     </form>

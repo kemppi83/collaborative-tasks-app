@@ -77,7 +77,7 @@ export const Signup = (): JSX.Element => {
           <input
             type={show ? 'text' : 'password'}
             placeholder="Confirm password"
-            name="password"
+            name="confirmPassword"
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
           />

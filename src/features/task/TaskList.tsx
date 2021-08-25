@@ -48,21 +48,24 @@ const TaskList = ({
           <p className="taskcard__title">{task.title}</p>
           {task.status === 'active' ? (
             <button
-              className="button--done"
+              type="button"
+              className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
               onClick={() => onChangeStatus(task)}
             >
               Mark as done
             </button>
           ) : (
             <button
-              className="button--active"
+              className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
+              type="button"
               onClick={() => onChangeStatus(task)}
             >
               Reactivate
             </button>
           )}
           <button
-            className="button--delete"
+            className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
+            type="button"
             onClick={() => onDeleteTask(task.id)}
           >
             Delete

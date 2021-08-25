@@ -29,6 +29,7 @@ export interface Todo {
   collaborators: string[];
   tasks: string[];
   owner: boolean;
+  collaboratorString?: string;
 }
 
 export interface GetTodosResponse {

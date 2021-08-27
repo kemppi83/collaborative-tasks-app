@@ -37,7 +37,9 @@ const todoSlice = createSlice({
     ) => {
       const updatedTodos = [...state.todos];
       const updateIndex = updatedTodos.findIndex(i => i.id === todoId);
-      updatedTodos.splice(updateIndex, 1);
+      if (updateIndex > -1) {
+        updatedTodos.splice(updateIndex, 1);
+      }
       state.todos = updatedTodos;
     },
     resetTodos: state => initialState

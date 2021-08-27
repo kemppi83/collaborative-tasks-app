@@ -20,6 +20,10 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface RecoveryRequest {
+  email: string;
+}
+
 export interface Todo {
   id: string;
   title: string;
@@ -51,7 +55,7 @@ export interface UpdateTodoResponse {
   updatedTodo: Todo;
 }
 
-export interface DeleteTodoResponse {
+export interface ServiceResponse {
   message: string;
 }
 

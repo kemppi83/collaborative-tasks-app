@@ -77,7 +77,7 @@ const SocketHandler: SocketHandlerType = () => {
 
   const socketDeleteTodo = (todoId: string): void => {
     if (socketRef.current) {
-      console.log('in socketDeleteTodo');
+      console.log('in socketDeleteTodo, id: ', todoId);
       socketRef.current.emit('todo:delete', todoId);
     }
   };

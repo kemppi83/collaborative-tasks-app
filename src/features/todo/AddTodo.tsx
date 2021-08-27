@@ -72,28 +72,28 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
 
   return (
     <form
-      className="grid grid-cols-1 gap-1 max-w-sm mx-auto"
+      className="grid grid-cols-1 max-w-sm mx-auto mt-5"
       onSubmit={todoSubmitHandler}
     >
-      <h3>Register New ToDo</h3>
+      <h3 className="mx-auto text-xl font-bold">Register New ToDo</h3>
 
       <label htmlFor="title">Title:</label>
       <input
-        data-testid="title"
         placeholder={error}
         type="text"
         name="title"
         value={formState.title}
         onChange={handleChange}
+        className="mt-1 mb-3 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
       />
 
       <label htmlFor="description">Text:</label>
       <input
-        data-testid="description"
         type="text"
         name="description"
         value={formState.description}
         onChange={handleChange}
+        className="mt-1 mb-3 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
       />
 
       <label htmlFor="collaboratorString">
@@ -104,11 +104,12 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
         name="collaboratorString"
         value={formState.collaboratorString}
         onChange={handleChange}
+        className="mt-1 mb-3 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
       />
 
       <button
         type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="mb-20 mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Add todo
       </button>

@@ -12,6 +12,8 @@ import AddTask from '../task/AddTask';
 
 import type { Todo, Task } from '../../app/models';
 
+import { CheckIcon, XIcon } from '@heroicons/react/solid';
+
 interface TodoListProps {
   socketAddTask: (task: Task) => void;
   socketUpdateTask: (task: Task) => void;
@@ -85,53 +87,73 @@ const TodoList = ({
   return (
     <ul className="flex flex-col">
       {todos.map(todo => (
-        <li key={todo.id} className={`todocard__${todo.status}`}>
-          <p className="todocard__title">{todo.title}</p>
-          <p className="todocard__text">{todo.description}</p>
-          {showTodo.includes(todo.id) ? (
-            <>
+        <li
+          key={todo.id}
+          className={`p-3 grid grid-cols-1 max-w-sm md:max-w-md mx-auto mb-5 w-full rounded ${
+            todo.status === 'done' ? 'bg-purple-300' : 'bg-blue-100'
+          }`}
+        >
+          <div>
+            <h3 className="text-lg font-semibold">{todo.title}</h3>
+            <p className="todocard__text my-2">{todo.description}</p>
+            {showTodo.includes(todo.id) ? (
+              <>
+                <h4 className="font-bold">Tasks</h4>
+                <TaskList
+                  todoId={todo.id}
+                  socketUpdateTask={socketUpdateTask}
+                  socketDeleteTask={socketDeleteTask}
+                />
+                <AddTask todoId={todo.id} socketAddTask={socketAddTask} />
+                <h4 className="font-bold">Collaborators</h4>
+                <ul className="list-disc my-2">
+                  {todo.collaborators.map(email => (
+                    <li key={email} className="ml-5 my-1 flex justify-between">
+                      {email}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+          </div>
+          <div className="flex justify-between items-center">
+            {showTodo.includes(todo.id) ? (
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 onClick={() => handleExpandTodo(todo.id)}
               >
                 Hide details
               </button>
-              <TaskList
-                todoId={todo.id}
-                socketUpdateTask={socketUpdateTask}
-                socketDeleteTask={socketDeleteTask}
+            ) : (
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => handleExpandTodo(todo.id)}
+              >
+                Show details
+              </button>
+            )}
+            <div className="flex items-center">
+              {todo.status === 'active' ? (
+                <CheckIcon
+                  type="button"
+                  className="cursor-pointer h-7 w-7 text-blue-500 hover:text-blue-700"
+                  onClick={() => onChangeStatus(todo)}
+                />
+              ) : (
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={() => onChangeStatus(todo)}
+                >
+                  Reactivate
+                </button>
+              )}
+              <XIcon
+                type="button"
+                className="ml-3 cursor-pointer h-7 w-7 text-red-500 hover:text-red-700"
+                onClick={() => onDeleteTodo(todo.id)}
               />
-              <AddTask todoId={todo.id} socketAddTask={socketAddTask} />
-            </>
-          ) : (
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => handleExpandTodo(todo.id)}
-            >
-              Show details
-            </button>
-          )}
-          {todo.status === 'active' ? (
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => onChangeStatus(todo)}
-            >
-              Mark as done
-            </button>
-          ) : (
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => onChangeStatus(todo)}
-            >
-              Reactivate
-            </button>
-          )}
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => onDeleteTodo(todo.id)}
-          >
-            Delete
-          </button>
+            </div>
+          </div>
         </li>
       ))}
     </ul>

@@ -24,40 +24,40 @@ const Nav = (): JSX.Element => {
           Collaborative Tasks
         </span>
       </div>
-      <div className="w-full block flex-grow md:flex md:items-center md:w-auto">
+      <div className="w-full block flex-grow sm:flex sm:items-center sm:w-auto">
         {user ? (
-          <div className="text-sm md:flex-grow">
-            <p className="block mt-4 md:inline-block md:mt-0 text-teal-lighter mr-4">
+          <div className="text-sm sm:flex-grow">
+            <p className="block mt-4 sm:inline-block sm:mt-0 text-teal-lighter mr-4">
               {user.username ? `Hello ${user.username}!` : null}
             </p>
             <button
               type="button"
               onClick={() => push('/')}
-              className="block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white mr-4"
+              className="block mt-4 sm:inline-block sm:mt-0 text-teal-lighter hover:text-white mr-4"
             >
               Home
             </button>
             <button
               type="button"
               onClick={logoutHandler}
-              className="block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white mr-4"
+              className="block mt-4 sm:inline-block sm:mt-0 text-teal-lighter hover:text-white mr-4"
             >
               Logout
             </button>
           </div>
         ) : (
-          <div className="text-sm md:flex-grow">
+          <div className="text-sm sm:flex-grow">
             <button
               type="button"
               onClick={() => push('/login')}
-              className="block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white mr-4"
+              className="block mt-4 sm:inline-block sm:mt-0 text-teal-lighter hover:text-white mr-4"
             >
               Login
             </button>
             <button
               type="button"
               onClick={() => push('/signup')}
-              className="block mt-4 md:inline-block md:mt-0 text-teal-lighter hover:text-white mr-4"
+              className="block mt-4 sm:inline-block sm:mt-0 text-teal-lighter hover:text-white mr-4"
             >
               Sign Up
             </button>

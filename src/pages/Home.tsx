@@ -13,7 +13,7 @@ const Home = (): JSX.Element => {
     socketDeleteTodo
   } = SocketHandler();
   return (
-    <>
+    <main className="mx-2">
       <TodoList
         socketAddTask={socketAddTask}
         socketUpdateTask={socketUpdateTask}
@@ -22,7 +22,7 @@ const Home = (): JSX.Element => {
         socketDeleteTodo={socketDeleteTodo}
       />
       <AddTodo socketAddTodo={socketAddTodo} />
-    </>
+    </main>
   );
 };
 

@@ -31,6 +31,7 @@ export const Signup = (): JSX.Element => {
     try {
       const user = await signup(formState).unwrap();
       dispatch(setCredentials(user));
+      localStorage.setItem('token', user.token);
       push('/');
     } catch (err) {
       console.log(err);

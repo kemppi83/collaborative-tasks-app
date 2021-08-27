@@ -4,12 +4,13 @@ import type {
   UserResponse,
   SignupRequest,
   LoginRequest,
+  RecoveryRequest,
   Todo,
   GetTodosResponse,
   CreateTodoResponse,
   UpdateTodoRequest,
   UpdateTodoResponse,
-  DeleteTodoResponse
+  ServiceResponse
 } from '../models';
 
 let url: string;
@@ -78,10 +79,17 @@ export const api = createApi({
         body: updateData
       })
     }),
-    dbDeleteTodo: builder.mutation<DeleteTodoResponse, string>({
+    dbDeleteTodo: builder.mutation<ServiceResponse, string>({
       query: id => ({
         url: `todos/${id}`,
         method: 'DELETE'
+      })
+    }),
+    recover: builder.mutation<ServiceResponse, RecoveryRequest>({
+      query: emailObject => ({
+        url: `recover`,
+        method: 'POST',
+        body: emailObject
       })
     })
   })
@@ -94,5 +102,6 @@ export const {
   useGetTodosQuery,
   usePostTodoMutation,
   useUpdateTodoMutation,
-  useDbDeleteTodoMutation
+  useDbDeleteTodoMutation,
+  useRecoverMutation
 } = api;

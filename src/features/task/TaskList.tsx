@@ -5,6 +5,8 @@ import { updateTask, deleteTask } from './taskSlice';
 
 import type { Task } from '../../app/models';
 
+import { CheckIcon, XIcon } from '@heroicons/react/solid';
+
 interface TaskListProps {
   todoId: string;
   socketUpdateTask: (task: Task) => void;
@@ -42,34 +44,38 @@ const TaskList = ({
   };
 
   return (
-    <ul>
+    <ul className="list-disc my-2">
       {thisTodoTasks.map(task => (
-        <li key={task.id} className={`taskcard__${task.status}`}>
-          <p className="taskcard__title">{task.title}</p>
-          {task.status === 'active' ? (
-            <button
-              type="button"
-              className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
-              onClick={() => onChangeStatus(task)}
-            >
-              Mark as done
-            </button>
-          ) : (
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
-              type="button"
-              onClick={() => onChangeStatus(task)}
-            >
-              Reactivate
-            </button>
-          )}
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
-            type="button"
-            onClick={() => onDeleteTask(task.id)}
+        <li key={task.id} className="ml-5 my-1 flex justify-between">
+          <p
+            className={`text-base max-w-xs ${
+              task.status === 'done' ? 'italic line-through' : null
+            }`}
           >
-            Delete
-          </button>
+            {task.title}
+          </p>
+          <div className="flex items-center">
+            {task.status === 'active' ? (
+              <CheckIcon
+                type="button"
+                className="cursor-pointer h-5 w-5 text-blue-500 hover:text-blue-700"
+                onClick={() => onChangeStatus(task)}
+              />
+            ) : (
+              <button
+                className=" hover:text-blue-700 text-blue-500 text-xs py-1 px-2 rounded"
+                type="button"
+                onClick={() => onChangeStatus(task)}
+              >
+                Reactivate
+              </button>
+            )}
+            <XIcon
+              type="button"
+              className="cursor-pointer h-5 w-5 text-red-500 hover:text-red-700"
+              onClick={() => onDeleteTask(task.id)}
+            />
+          </div>
         </li>
       ))}
     </ul>

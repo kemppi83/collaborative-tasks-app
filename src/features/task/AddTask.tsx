@@ -25,7 +25,7 @@ const AddTask = ({ todoId, socketAddTask }: AddTaskProps): JSX.Element => {
   const taskSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!formState.title) {
-      return setError('Task title is required!');
+      return setError('You can not submit an empty task!');
     }
 
     const newTask = {
@@ -51,22 +51,22 @@ const AddTask = ({ todoId, socketAddTask }: AddTaskProps): JSX.Element => {
   };
 
   return (
-    <form data-testid="todo-form" onSubmit={taskSubmitHandler}>
-      <h3>Register New Task</h3>
-
-      <label htmlFor="title">Title:</label>
+    <form
+      onSubmit={taskSubmitHandler}
+      className="flex justify-between items-center mb-3"
+    >
       <input
-        data-testid="title"
         placeholder={error}
         type="text"
         name="title"
         value={formState.title}
         onChange={handleChange}
+        className="mt-1 block sm:w-4/6 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
       />
 
       <button
         type="submit"
-        className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
+        className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded max-h-8"
       >
         Add task
       </button>

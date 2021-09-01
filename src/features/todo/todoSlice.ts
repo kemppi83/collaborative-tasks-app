@@ -4,10 +4,12 @@ import type { RootState } from '../../app/store';
 
 interface TodosState {
   todos: Todo[];
+  show: boolean;
 }
 
 const initialState: TodosState = {
-  todos: []
+  todos: [],
+  show: false,
 };
 
 // WARNING: setTodos overwrites the whole todos state.
@@ -15,6 +17,9 @@ const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
+    showForm: (state) => {
+      state.show = !state.show;
+    },
     addTodo: (state, { payload: { todo } }: PayloadAction<{ todo: Todo }>) => {
       state.todos.push(todo);
     },
@@ -46,8 +51,9 @@ const todoSlice = createSlice({
   }
 });
 
-export const { addTodo, updateStatus, deleteTodo, resetTodos } =
+export const { showForm, addTodo, updateStatus, deleteTodo, resetTodos } =
   todoSlice.actions;
 export default todoSlice.reducer;
 export const selectCurrentUserTodos = (state: RootState): Todo[] =>
   state.todo.todos;
+export const selectCurrentShowForm = (state: RootState): boolean => state.todo.show;

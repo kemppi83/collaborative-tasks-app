@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTodos } from '../../hooks/useTodos';
 import { useAppDispatch } from '../../hooks/store';
-import { addTodo, deleteTodo } from './todoSlice';
+import { addTodo, deleteTodo, showForm } from './todoSlice';
 import {
   useGetTodosQuery,
   useUpdateTodoMutation,
@@ -86,6 +86,14 @@ const TodoList = ({
 
   return (
     <ul className="flex flex-col">
+      {todos.length < 1 ? (
+        <div className="mt-5 flex items-center">
+          <p>Add your first todo-list by clicking</p>
+          <button type="button" onClick={() => dispatch(showForm())} className="p-1 font-bold">
+            here
+          </button>
+        </div>
+      ) : (null)}
       {todos.map(todo => (
         <li
           key={todo.id}

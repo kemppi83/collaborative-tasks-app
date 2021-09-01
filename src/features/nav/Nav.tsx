@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useAppDispatch } from '../../hooks/store';
-import { resetTodos } from '../../features/todo/todoSlice';
+import { resetTodos, showForm } from '../../features/todo/todoSlice';
 import { resetCredentials } from '../../features/auth/authSlice';
 
 const Nav = (): JSX.Element => {
@@ -36,6 +36,12 @@ const Nav = (): JSX.Element => {
               className="block mt-4 sm:inline-block sm:mt-0 text-teal-lighter hover:text-white mr-4"
             >
               Home
+            </button>
+            <button
+              className="block mt-4 sm:inline-block sm:mt-0 text-teal-lighter hover:text-white mr-4"
+              onClick={() => dispatch(showForm())}
+            >
+              Add todo-list
             </button>
             <button
               type="button"

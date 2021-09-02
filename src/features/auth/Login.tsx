@@ -82,15 +82,15 @@ export const Login = (): JSX.Element => {
           placeholder="Email"
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
         />
-        <div className="flex w-auto">
+        <div className="flex w-auto items-center">
           <input
             type={show ? 'text' : 'password'}
             placeholder="Enter password"
             name="password"
             onChange={handleChange}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
+            className="block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
           />
-          <button type="button" onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded">
+          <button type="button" onClick={handleClick} className="bg-blue-500 hover:bg-blue-700 text-white ml-2 px-2 rounded h-8">
             {show ? 'Hide' : 'Show'}
           </button>
         </div>

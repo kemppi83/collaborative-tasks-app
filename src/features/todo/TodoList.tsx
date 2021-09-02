@@ -38,7 +38,9 @@ const TodoList = ({
 
   useEffect(() => {
     if (data) {
-      data.todos.forEach(serverTodo => {
+      const serverTodos = [...data.todos];
+      serverTodos.sort((x, y) => x.timestamp - y.timestamp);
+      serverTodos.forEach(serverTodo => {
         if (!todos.find(el => el.id === serverTodo.id)) {
           dispatch(addTodo({ todo: serverTodo }));
         }
@@ -85,35 +87,40 @@ const TodoList = ({
   };
 
   return (
-    <ul className="flex flex-col">
+    <ul className="flex flex-col items-center md:flex-row md:justify-center md:flex-wrap md:items-start">
       {todos.length < 1 ? (
         <div className="mt-5 flex items-center">
           <p>Add your first todo-list by clicking</p>
-          <button type="button" onClick={() => dispatch(showForm())} className="p-1 font-bold">
+          <button
+            type="button"
+            onClick={() => dispatch(showForm())}
+            className="p-1 font-bold"
+          >
             here
           </button>
         </div>
-      ) : (null)}
+      ) : null}
       {todos.map(todo => (
         <li
           key={todo.id}
-          className={`p-3 grid grid-cols-1 max-w-sm md:max-w-md mx-auto mb-5 w-full rounded ${
+          className={`p-3 grid grid-cols-1 max-w-sm mx-2 my-5 w-full rounded-md ${
             todo.status === 'done' ? 'bg-purple-300' : 'bg-blue-100'
           }`}
         >
           <div>
             <h3 className="text-lg font-semibold">{todo.title}</h3>
-            <p className="todocard__text my-2">{todo.description}</p>
+            <p className="my-2">{todo.description}</p>
             {showTodo.includes(todo.id) ? (
               <>
-                <h4 className="font-bold">Tasks</h4>
                 <TaskList
                   todoId={todo.id}
                   socketUpdateTask={socketUpdateTask}
                   socketDeleteTask={socketDeleteTask}
                 />
                 <AddTask todoId={todo.id} socketAddTask={socketAddTask} />
-                <h4 className="font-bold">Collaborators</h4>
+                {todo.collaborators.length > 0 ? (
+                  <h4 className="font-bold">Collaborators</h4>
+                ) : null}
                 <ul className="list-disc my-2">
                   {todo.collaborators.map(email => (
                     <li key={email} className="ml-5 my-1 flex justify-between">
@@ -127,14 +134,14 @@ const TodoList = ({
           <div className="flex justify-between items-center">
             {showTodo.includes(todo.id) ? (
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
                 onClick={() => handleExpandTodo(todo.id)}
               >
                 Hide details
               </button>
             ) : (
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
                 onClick={() => handleExpandTodo(todo.id)}
               >
                 Show details

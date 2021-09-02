@@ -26,8 +26,6 @@ if (process.env.NODE_ENV === 'production') {
   url = `${process.env.REACT_APP_SERVER_URL_DEV}/api`;
 }
 
-console.log(url);
-
 export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: url,
@@ -44,6 +42,7 @@ export const api = createApi({
       return headers;
     }
   }),
+  tagTypes: ['Todo'],
   endpoints: builder => ({
     signup: builder.mutation<UserResponse, SignupRequest>({
       query: signupData => ({
@@ -57,13 +56,15 @@ export const api = createApi({
         url: 'login',
         method: 'POST',
         body: credentials
-      })
+      }),
+      invalidatesTags: ['Todo'],
     }),
     verifyToken: builder.query<UserResponse, void>({
       query: () => 'verifytoken'
     }),
     getTodos: builder.query<GetTodosResponse, void>({
-      query: () => 'todos'
+      query: () => 'todos',
+      providesTags: ['Todo'],
     }),
     postTodo: builder.mutation<CreateTodoResponse, Todo>({
       query: newTodo => ({

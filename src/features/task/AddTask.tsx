@@ -61,7 +61,7 @@ const AddTask = ({ todoId, socketAddTask }: AddTaskProps): JSX.Element => {
         name="title"
         value={formState.title}
         onChange={handleChange}
-        className="mt-1 block sm:w-4/6 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
+        className="block sm:w-4/6 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
       />
 
       <button

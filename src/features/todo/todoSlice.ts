@@ -9,7 +9,7 @@ interface TodosState {
 
 const initialState: TodosState = {
   todos: [],
-  show: false,
+  show: false
 };
 
 // WARNING: setTodos overwrites the whole todos state.
@@ -17,7 +17,7 @@ const todoSlice = createSlice({
   name: 'todo',
   initialState,
   reducers: {
-    showForm: (state) => {
+    showForm: state => {
       state.show = !state.show;
     },
     addTodo: (state, { payload: { todo } }: PayloadAction<{ todo: Todo }>) => {
@@ -56,4 +56,5 @@ export const { showForm, addTodo, updateStatus, deleteTodo, resetTodos } =
 export default todoSlice.reducer;
 export const selectCurrentUserTodos = (state: RootState): Todo[] =>
   state.todo.todos;
-export const selectCurrentShowForm = (state: RootState): boolean => state.todo.show;
+export const selectCurrentShowForm = (state: RootState): boolean =>
+  state.todo.show;

@@ -62,6 +62,7 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
     });
 
     socketAddTodo(newTodo);
+    dispatch(showForm());
 
     try {
       const postedTodo = await postTodo(newTodo).unwrap();
@@ -74,12 +75,12 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
   return (
     <div className="fixed min-w-screen h-screen top-0 inset-0 z-50 flex bg-indigo-700 bg-opacity-95">
       <form
-        className="grid grid-cols-1 max-w-sm w-500 mx-auto my-auto text-white px-3"
+        className="grid grid-cols-1 max-w-sm w-500 mx-auto my-auto px-3"
         onSubmit={todoSubmitHandler}
       >
-        <h3 className="mx-auto text-xl font-bold">Add new ToDo-list</h3>
+        <h3 className="mx-auto text-xl text-white font-bold">Add new ToDo-list</h3>
 
-        <label htmlFor="title">Title:</label>
+        <label htmlFor="title" className="text-white">Title:</label>
         <input
           placeholder={error}
           type="text"
@@ -89,7 +90,7 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
           className="mt-1 mb-3 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
         />
 
-        <label htmlFor="description">Text:</label>
+        <label htmlFor="description" className="text-white">Text:</label>
         <input
           type="text"
           name="description"
@@ -99,10 +100,10 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
         />
 
         <div className="flex items-center justify-between">
-          <label htmlFor="collaboratorString">
+          <label htmlFor="collaboratorString" className="text-white">
             Collaborators (optional):
           </label>
-          <button type="button" onClick={() => setShowInfo(!showInfo)} className="p-1 font-bold">
+          <button type="button" onClick={() => setShowInfo(!showInfo)} className="p-1 font-bold text-white">
             ?
           </button>
         </div>
@@ -116,7 +117,7 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
         />
 
         <div className="mt-5 flex items-center justify-between">
-          <button type="button" onClick={() => dispatch(showForm())} className="p-1 font-bold">
+          <button type="button" onClick={() => dispatch(showForm())} className="p-1 font-bold text-white">
             Cancel
           </button>
           <button

@@ -44,41 +44,51 @@ const TaskList = ({
   };
 
   return (
-    <ul className="list-disc my-2">
-      {thisTodoTasks.map(task => (
-        <li key={task.id} className="ml-5 my-1 flex justify-between">
-          <p
-            className={`text-base max-w-xs ${
-              task.status === 'done' ? 'italic line-through' : null
-            }`}
+    <>
+      {thisTodoTasks.length > 0 ? <h4 className="font-bold">Tasks</h4> : null}
+      <ul
+        className={`my-2 py-1 rounded px-1 ${
+          thisTodoTasks.length > 0 ? 'bg-blue-200' : null
+        }`}
+      >
+        {thisTodoTasks.map(task => (
+          <li
+            key={task.id}
+            className="my-3 flex justify-between border-b border-indigo-700 border-dashed"
           >
-            {task.title}
-          </p>
-          <div className="flex items-center">
-            {task.status === 'active' ? (
-              <CheckIcon
+            <p
+              className={`text-base max-w-xs ${
+                task.status === 'done' ? 'italic line-through' : null
+              }`}
+            >
+              {task.title}
+            </p>
+            <div className="flex items-center">
+              {task.status === 'active' ? (
+                <CheckIcon
+                  type="button"
+                  className="cursor-pointer h-5 w-5 text-blue-500 hover:text-blue-700"
+                  onClick={() => onChangeStatus(task)}
+                />
+              ) : (
+                <button
+                  className=" hover:text-blue-700 text-blue-500 text-xs py-1 px-2 rounded"
+                  type="button"
+                  onClick={() => onChangeStatus(task)}
+                >
+                  Reactivate
+                </button>
+              )}
+              <XIcon
                 type="button"
-                className="cursor-pointer h-5 w-5 text-blue-500 hover:text-blue-700"
-                onClick={() => onChangeStatus(task)}
+                className="cursor-pointer h-5 w-5 text-red-500 hover:text-red-700"
+                onClick={() => onDeleteTask(task.id)}
               />
-            ) : (
-              <button
-                className=" hover:text-blue-700 text-blue-500 text-xs py-1 px-2 rounded"
-                type="button"
-                onClick={() => onChangeStatus(task)}
-              >
-                Reactivate
-              </button>
-            )}
-            <XIcon
-              type="button"
-              className="cursor-pointer h-5 w-5 text-red-500 hover:text-red-700"
-              onClick={() => onDeleteTask(task.id)}
-            />
-          </div>
-        </li>
-      ))}
-    </ul>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 };
 

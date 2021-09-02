@@ -8,8 +8,8 @@ import { useAuth } from './hooks/useAuth';
 import { useVerifyTokenQuery } from './app/services/api';
 import { useAppDispatch } from './hooks/store';
 import { setCredentials, resetCredentials } from './features/auth/authSlice';
-import Nav from './features/nav/Nav';
 
+import Nav from './features/nav/Nav';
 import Home from './pages/Home';
 
 const App = (): JSX.Element => {
@@ -33,7 +33,6 @@ const App = (): JSX.Element => {
 
   useEffect(() => {
     if (user) {
-      console.log('käyttäjä: ', user);
       setAllSetup(true);
     }
   }, [user]);

@@ -6,6 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useAppDispatch } from '../../hooks/store';
 import { resetTodos, showForm } from '../../features/todo/todoSlice';
 import { resetCredentials } from '../../features/auth/authSlice';
+// import Close from '../buttons/Close';
 
 const Nav = (): JSX.Element => {
   const { user } = useAuth();
@@ -89,9 +90,16 @@ const Nav = (): JSX.Element => {
         >
           <XIcon
             type="button"
-            className="cursor-pointer h-10 w-10 text-red-500 hover:text-red-700 ml-auto mr-2 mt-4"
+            className="cursor-pointer h-10 w-10 fill-current text-red-500 hover:text-red-700 ml-auto mr-2 mt-4"
             onClick={() => setIsOpen(!isOpen)}
           />
+          {/* <Close
+            clickHandler={setIsOpen}
+            classString={
+              'cursor-pointer h-10 w-10 text-red-500 hover:text-red-700 ml-auto mr-2 mt-4'
+            }
+            isOpen={isOpen}
+          /> */}
           {user ? (
             <>
               <button

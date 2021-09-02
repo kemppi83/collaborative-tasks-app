@@ -78,9 +78,13 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
         className="grid grid-cols-1 max-w-sm w-500 mx-auto my-auto px-3"
         onSubmit={todoSubmitHandler}
       >
-        <h3 className="mx-auto text-xl text-white font-bold">Add new ToDo-list</h3>
+        <h3 className="mx-auto text-xl text-white font-bold">
+          Add new ToDo-list
+        </h3>
 
-        <label htmlFor="title" className="text-white">Title:</label>
+        <label htmlFor="title" className="text-white">
+          Title:
+        </label>
         <input
           placeholder={error}
           type="text"
@@ -90,7 +94,9 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
           className="mt-1 mb-3 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
         />
 
-        <label htmlFor="description" className="text-white">Text:</label>
+        <label htmlFor="description" className="text-white">
+          Text:
+        </label>
         <input
           type="text"
           name="description"
@@ -103,11 +109,21 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
           <label htmlFor="collaboratorString" className="text-white">
             Collaborators (optional):
           </label>
-          <button type="button" onClick={() => setShowInfo(!showInfo)} className="p-1 font-bold text-white">
+          <button
+            type="button"
+            onClick={() => setShowInfo(!showInfo)}
+            className="p-1 font-bold text-white"
+          >
             ?
           </button>
         </div>
-        {showInfo && <p>You can collaborate with other users in real-time! Add the collaborators&apos; email addresses as a comma-separated list. N.b. the collaborators have to have an account!</p>}
+        {showInfo && (
+          <p>
+            You can collaborate with other users in real-time! Add the
+            collaborators&apos; email addresses as a comma-separated list. N.b.
+            the collaborators have to have an account!
+          </p>
+        )}
         <input
           type="text"
           name="collaboratorString"
@@ -117,7 +133,11 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
         />
 
         <div className="mt-5 flex items-center justify-between">
-          <button type="button" onClick={() => dispatch(showForm())} className="p-1 font-bold text-white">
+          <button
+            type="button"
+            onClick={() => dispatch(showForm())}
+            className="p-1 font-bold text-white"
+          >
             Cancel
           </button>
           <button

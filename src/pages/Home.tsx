@@ -24,7 +24,7 @@ const Home = (): JSX.Element => {
         socketUpdateTodo={socketUpdateTodo}
         socketDeleteTodo={socketDeleteTodo}
       />
-      {show && <AddTodo socketAddTodo={socketAddTodo} /> }
+      {show && <AddTodo socketAddTodo={socketAddTodo} />}
     </main>
   );
 };

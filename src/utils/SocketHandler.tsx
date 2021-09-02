@@ -77,7 +77,6 @@ const SocketHandler: SocketHandlerType = () => {
 
   const socketDeleteTodo = (todoId: string): void => {
     if (socketRef.current) {
-      console.log('in socketDeleteTodo, id: ', todoId);
       socketRef.current.emit('todo:delete', todoId);
     }
   };
@@ -125,12 +124,10 @@ const SocketHandler: SocketHandlerType = () => {
       });
 
       socketRef.current.on('todo:serverUpdated', (todo: Todo) => {
-        console.log(todo);
         dispatch(updateStatus({ todoId: todo.id }));
       });
 
       socketRef.current.on('todo:unsubscribe', (todoId: string) => {
-        console.log('in todo:unsubscribe, id: ', todoId);
         dispatch(deleteTodo({ todoId }));
         if (socketRef.current) {
           socketRef.current.emit('todo:leave-room', todoId);

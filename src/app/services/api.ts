@@ -57,14 +57,14 @@ export const api = createApi({
         method: 'POST',
         body: credentials
       }),
-      invalidatesTags: ['Todo'],
+      invalidatesTags: ['Todo']
     }),
     verifyToken: builder.query<UserResponse, void>({
       query: () => 'verifytoken'
     }),
     getTodos: builder.query<GetTodosResponse, void>({
       query: () => 'todos',
-      providesTags: ['Todo'],
+      providesTags: ['Todo']
     }),
     postTodo: builder.mutation<CreateTodoResponse, Todo>({
       query: newTodo => ({

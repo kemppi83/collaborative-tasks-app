@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { XIcon } from '@heroicons/react/solid';
 
 import { useAuth } from '../../hooks/useAuth';
 import { useAppDispatch } from '../../hooks/store';
 import { resetTodos, showForm } from '../../features/todo/todoSlice';
 import { resetCredentials } from '../../features/auth/authSlice';
-// import Close from '../buttons/Close';
+import Close from '../buttons/Close';
 
 const Nav = (): JSX.Element => {
   const { user } = useAuth();
@@ -88,18 +87,13 @@ const Nav = (): JSX.Element => {
           ref={node}
           className="fixed w-72 h-screen top-0 right-0 z-10 flex flex-col items-center bg-blue-200 bg-opacity-95"
         >
-          <XIcon
-            type="button"
-            className="cursor-pointer h-10 w-10 fill-current text-red-500 hover:text-red-700 ml-auto mr-2 mt-4"
-            onClick={() => setIsOpen(!isOpen)}
-          />
-          {/* <Close
-            clickHandler={setIsOpen}
+          <Close
             classString={
-              'cursor-pointer h-10 w-10 text-red-500 hover:text-red-700 ml-auto mr-2 mt-4'
+              'cursor-pointer h-10 w-10 fill-current stroke-current stroke-1 text-red-500 hover:text-red-700 ml-auto mr-2 mt-4'
             }
+            clickHandler={setIsOpen}
             isOpen={isOpen}
-          /> */}
+          />
           {user ? (
             <>
               <button

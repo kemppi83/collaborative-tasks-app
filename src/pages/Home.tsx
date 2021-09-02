@@ -16,16 +16,18 @@ const Home = (): JSX.Element => {
   const { show } = useShowForm();
 
   return (
-    <main className="mx-2">
-      <TodoList
-        socketAddTask={socketAddTask}
-        socketUpdateTask={socketUpdateTask}
-        socketDeleteTask={socketDeleteTask}
-        socketUpdateTodo={socketUpdateTodo}
-        socketDeleteTodo={socketDeleteTodo}
-      />
+    <>
+      <main className="px-2">
+        <TodoList
+          socketAddTask={socketAddTask}
+          socketUpdateTask={socketUpdateTask}
+          socketDeleteTask={socketDeleteTask}
+          socketUpdateTodo={socketUpdateTodo}
+          socketDeleteTodo={socketDeleteTodo}
+        />
+      </main>
       {show && <AddTodo socketAddTodo={socketAddTodo} />}
-    </main>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useAppDispatch } from '../../hooks/store';
@@ -20,6 +20,30 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const [postTodo] = usePostTodoMutation();
   const [showInfo, setShowInfo] = useState(false);
+  const node = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    // add when mounted
+    document.addEventListener('mousedown', handleClick);
+    // return function to be called when unmounted
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+    };
+  }, []);
+
+  const handleClick = (e: MouseEvent) => {
+    // console.log(e.target as HTMLDivElement);
+    if (
+      node &&
+      node.current &&
+      node.current.contains(e.target as HTMLFormElement)
+    ) {
+      // inside click
+      return;
+    }
+    // outside click
+    dispatch(showForm());
+  };
 
   const handleChange = ({
     target: { name, value }
@@ -73,8 +97,9 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
   };
 
   return (
-    <div className="fixed min-w-screen h-screen top-0 inset-0 z-50 flex bg-indigo-700 bg-opacity-95">
+    <div className="fixed z-20 min-w-screen h-screen inset-0 flex bg-indigo-700 bg-opacity-95">
       <form
+        ref={node}
         className="grid grid-cols-1 max-w-sm w-500 mx-auto my-auto px-3"
         onSubmit={todoSubmitHandler}
       >

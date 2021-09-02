@@ -70,9 +70,9 @@ export const Login = (): JSX.Element => {
   };
 
   return (
-    <div className="flex-col gap-6 max-w-sm mx-auto">
+    <div className="flex flex-col items-center w-11/12 max-w-xs mx-auto">
       <form
-        className="grid grid-cols-1 gap-6 max-w-sm mx-auto items-center"
+        className="flex flex-col justify-center items-center w-full space-y-3"
         onSubmit={loginSubmitHandler}
       >
         <input
@@ -82,7 +82,7 @@ export const Login = (): JSX.Element => {
           placeholder="Email"
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
         />
-        <div className="flex w-auto items-center">
+        <div className="flex w-full items-center">
           <input
             type={show ? 'text' : 'password'}
             placeholder="Enter password"

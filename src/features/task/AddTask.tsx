@@ -53,7 +53,7 @@ const AddTask = ({ todoId, socketAddTask }: AddTaskProps): JSX.Element => {
   return (
     <form
       onSubmit={taskSubmitHandler}
-      className="flex justify-between items-center mb-3"
+      className="flex-col xs:flex-row flex justify-between items-center mb-3"
     >
       <input
         placeholder={error}
@@ -61,7 +61,7 @@ const AddTask = ({ todoId, socketAddTask }: AddTaskProps): JSX.Element => {
         name="title"
         value={formState.title}
         onChange={handleChange}
-        className="block sm:w-4/6 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
+        className="block w-11/12 mb-3 xs:w-4/6 xs:mb-0 rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
       />
 
       <button

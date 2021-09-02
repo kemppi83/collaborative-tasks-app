@@ -91,7 +91,7 @@ const TodoCard = ({
             ) : null}
             <ul className="list-disc my-2">
               {todo.collaborators.map(email => (
-                <li key={email} className="ml-5 my-1 flex justify-between">
+                <li key={email} className="mb-4 flex justify-between text-sm">
                   {email}
                 </li>
               ))}

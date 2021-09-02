@@ -47,7 +47,7 @@ const TaskList = ({
     <>
       {thisTodoTasks.length > 0 ? <h4 className="font-bold">Tasks</h4> : null}
       <ul
-        className={`my-2 py-1 rounded px-1 ${
+        className={`mt-2 mb-4 py-1 rounded px-1 ${
           thisTodoTasks.length > 0 ? 'bg-blue-200' : null
         }`}
       >

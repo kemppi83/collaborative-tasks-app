@@ -39,13 +39,13 @@ export const Signup = (): JSX.Element => {
   };
 
   return (
-    <div className="container mx-auto">
+    <div className="flex flex-col items-center w-11/12 max-w-xs mx-auto">
       <div className="mb-5">
         Enter your email and optional username (email will be used as your
         username if left blank).
       </div>
       <form
-        className="grid grid-cols-1 gap-6 max-w-sm mx-auto"
+        className="flex flex-col justify-center items-center w-full space-y-3"
         onSubmit={signupSubmitHandler}
       >
         <input
@@ -62,7 +62,7 @@ export const Signup = (): JSX.Element => {
           onChange={handleChange}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
         />
-        <div className="flex w-auto">
+        <div className="flex w-full items-center">
           <input
             type={show ? 'text' : 'password'}
             placeholder="Enter password"
@@ -70,11 +70,15 @@ export const Signup = (): JSX.Element => {
             onChange={handleChange}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
           />
-          <button type="button" onClick={handleClick} className="p-1">
+          <button
+            type="button"
+            onClick={handleClick}
+            className="bg-blue-500 hover:bg-blue-700 text-white ml-2 px-2 rounded h-8"
+          >
             {show ? 'Hide' : 'Show'}
           </button>
         </div>
-        <div className="flex w-auto">
+        <div className="flex w-full">
           <input
             type={show ? 'text' : 'password'}
             placeholder="Confirm password"
@@ -83,7 +87,10 @@ export const Signup = (): JSX.Element => {
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-#1a7aff focus-ring-opacity-50"
           />
         </div>
-        <button type="submit" data-testid="submit">
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+        >
           Sign Up
         </button>
       </form>

@@ -29,6 +29,7 @@ const AddTodo = ({ socketAddTodo }: AddTodoProps): JSX.Element => {
     return () => {
       document.removeEventListener('mousedown', handleClick);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleClick = (e: MouseEvent) => {

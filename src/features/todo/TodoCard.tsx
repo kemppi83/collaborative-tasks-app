@@ -72,11 +72,11 @@ const TodoCard = ({
   return (
     <li
       key={todo.id}
-      className={`p-3 grid grid-cols-1 max-w-sm mx-2 my-5 w-full rounded-md ${
+      className={`p-3 flex flex-col items-center sm:max-w-md sm:mx-5 my-5 w-full rounded-md ${
         todo.status === 'done' ? 'bg-purple-300' : 'bg-blue-100'
       }`}
     >
-      <div>
+      <div className="w-full">
         <h3 className="text-lg font-semibold">{todo.title}</h3>
         <p className="my-2">{todo.description}</p>
         {showTodo.includes(todo.id) ? (
@@ -100,7 +100,7 @@ const TodoCard = ({
           </>
         ) : null}
       </div>
-      <div className="flex justify-between items-center">
+      <div className="w-full xs:w-3/4 flex justify-between items-center">
         {showTodo.includes(todo.id) ? (
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"

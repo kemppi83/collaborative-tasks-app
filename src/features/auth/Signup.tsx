@@ -30,7 +30,9 @@ export const Signup = (): JSX.Element => {
   const signupSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      if (!formState.password) {
+      if (!formState.username) {
+        setError('You must give a username.');
+      } else if (!formState.password) {
         setError('You must give a password.');
       } else if (formState.password !== formState.confirmPassword) {
         setError("Passwords don't match.");
@@ -48,8 +50,7 @@ export const Signup = (): JSX.Element => {
   return (
     <div className="flex flex-col items-center w-11/12 max-w-xs mx-auto">
       <div className="mb-5">
-        Enter your email and optional username (email will be used as your
-        username if left blank).
+        Enter your email and username and choose a password.
       </div>
       {error !== '' && <p>{error}</p>}
       <form

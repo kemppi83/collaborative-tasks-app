@@ -41,9 +41,9 @@ const TodoList = ({
   }, [data]);
 
   return (
-    <ul className="flex flex-col items-center md:flex-row md:justify-center md:flex-wrap md:items-start">
+    <>
       {todos.length < 1 ? (
-        <div className="mt-5 flex items-center">
+        <div className="my-5 flex items-center object-center">
           <p>Add your first todo-list by clicking</p>
           <button
             type="button"
@@ -57,38 +57,40 @@ const TodoList = ({
         <button
           type="button"
           onClick={() => dispatch(showForm())}
-          className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
+          className="mb-5 bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
         >
           Add todo
         </button>
       )}
-      {todos.map(todo => {
-        return todo.status === 'active' ? (
-          <TodoCard
-            key={todo.id}
-            todo={todo}
-            socketAddTask={socketAddTask}
-            socketUpdateTask={socketUpdateTask}
-            socketDeleteTask={socketDeleteTask}
-            socketUpdateTodo={socketUpdateTodo}
-            socketDeleteTodo={socketDeleteTodo}
-          />
-        ) : null;
-      })}
-      {todos.map(todo => {
-        return todo.status === 'done' ? (
-          <TodoCard
-            key={todo.id}
-            todo={todo}
-            socketAddTask={socketAddTask}
-            socketUpdateTask={socketUpdateTask}
-            socketDeleteTask={socketDeleteTask}
-            socketUpdateTodo={socketUpdateTodo}
-            socketDeleteTodo={socketDeleteTodo}
-          />
-        ) : null;
-      })}
-    </ul>
+      <ul className="flex flex-col items-center w-5/6 sm:flex-row sm:justify-center sm:flex-wrap sm:items-start">
+        {todos.map(todo => {
+          return todo.status === 'active' ? (
+            <TodoCard
+              key={todo.id}
+              todo={todo}
+              socketAddTask={socketAddTask}
+              socketUpdateTask={socketUpdateTask}
+              socketDeleteTask={socketDeleteTask}
+              socketUpdateTodo={socketUpdateTodo}
+              socketDeleteTodo={socketDeleteTodo}
+            />
+          ) : null;
+        })}
+        {todos.map(todo => {
+          return todo.status === 'done' ? (
+            <TodoCard
+              key={todo.id}
+              todo={todo}
+              socketAddTask={socketAddTask}
+              socketUpdateTask={socketUpdateTask}
+              socketDeleteTask={socketDeleteTask}
+              socketUpdateTodo={socketUpdateTodo}
+              socketDeleteTodo={socketDeleteTodo}
+            />
+          ) : null;
+        })}
+      </ul>
+    </>
   );
 };
 

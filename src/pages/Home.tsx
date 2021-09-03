@@ -17,7 +17,7 @@ const Home = (): JSX.Element => {
 
   return (
     <>
-      <main className="px-2">
+      <main className="px-2 flex flex-col items-center">
         <TodoList
           socketAddTask={socketAddTask}
           socketUpdateTask={socketUpdateTask}

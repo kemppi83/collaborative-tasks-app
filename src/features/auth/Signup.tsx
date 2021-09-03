@@ -43,7 +43,7 @@ export const Signup = (): JSX.Element => {
         push('/');
       }
     } catch (err) {
-      console.log(err);
+      setError(err.data.error);
     }
   };
 

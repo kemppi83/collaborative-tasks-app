@@ -60,7 +60,7 @@ const Nav = (): JSX.Element => {
             <h1 className="font-semibold text-xl tracking-tight">
               Collaborative Tasks
             </h1>
-            <p className="block mt-4 sm:inline-block sm:mt-0 text-teal-lighter mr-4">
+            <p className="block mt-4 sm:inline-block sm:mt-0 text-teal-lighter mr-32 pr-2">
               {user.username ? `Hello ${user.username}!` : null}
             </p>
             <button

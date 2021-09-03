@@ -15,6 +15,7 @@ export const Login = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { push } = useHistory();
   const [show, setShow] = useState(false);
+  const [error, setError] = useState('');
   const [showRecoveryEmailForm, setShowRecoveryEmailForm] = useState(false);
   const [recoveryEmailSent, setRecoveryEmailSent] = useState(false);
   const handleClick = () => setShow(!show);
@@ -44,9 +45,9 @@ export const Login = (): JSX.Element => {
   const loginSubmitHandler = async (event: FormEvent) => {
     event.preventDefault();
     try {
+      setError('');
       const user = await login(formState).unwrap();
       dispatch(setCredentials(user));
-      console.log('login: ', user);
       localStorage.setItem('token', user.token);
       let returnUrl = '/';
       if (state && state.from && state.from.pathname) {
@@ -55,6 +56,7 @@ export const Login = (): JSX.Element => {
       push(returnUrl);
     } catch (err) {
       console.log(err);
+      setError('Wrong credentials. Try again!');
     }
   };
 
@@ -71,6 +73,7 @@ export const Login = (): JSX.Element => {
 
   return (
     <div className="flex flex-col items-center w-11/12 max-w-xs mx-auto">
+      {error !== '' && <p>{error}</p>}
       <form
         className="flex flex-col justify-center items-center w-full space-y-3"
         onSubmit={loginSubmitHandler}

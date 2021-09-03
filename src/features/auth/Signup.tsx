@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAppDispatch } from '../../hooks/store';
 import { setCredentials } from './authSlice';
@@ -9,10 +9,11 @@ import type { SignupRequest } from '../../app/models';
 export const Signup = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { push } = useHistory();
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = useState(false);
+  const [error, setError] = useState('');
   const handleClick = () => setShow(!show);
 
-  const [formState, setFormstate] = React.useState<SignupRequest>({
+  const [formState, setFormstate] = useState<SignupRequest>({
     username: '',
     email: '',
     password: '',
@@ -29,10 +30,16 @@ export const Signup = (): JSX.Element => {
   const signupSubmitHandler = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const user = await signup(formState).unwrap();
-      dispatch(setCredentials(user));
-      localStorage.setItem('token', user.token);
-      push('/');
+      if (!formState.password) {
+        setError('You must give a password.');
+      } else if (formState.password !== formState.confirmPassword) {
+        setError("Passwords don't match.");
+      } else {
+        const user = await signup(formState).unwrap();
+        dispatch(setCredentials(user));
+        localStorage.setItem('token', user.token);
+        push('/');
+      }
     } catch (err) {
       console.log(err);
     }
@@ -44,6 +51,7 @@ export const Signup = (): JSX.Element => {
         Enter your email and optional username (email will be used as your
         username if left blank).
       </div>
+      {error !== '' && <p>{error}</p>}
       <form
         className="flex flex-col justify-center items-center w-full space-y-3"
         onSubmit={signupSubmitHandler}

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { CheckIcon, XIcon } from '@heroicons/react/solid';
 
 import {
   useUpdateTodoMutation,
@@ -10,6 +9,8 @@ import { useAppDispatch } from '../../hooks/store';
 import TaskList from '../task/TaskList';
 import AddTask from '../task/AddTask';
 import type { Todo, Task } from '../../app/models';
+import Close from '../buttons/Close';
+import Check from '../buttons/Check';
 
 interface TodoCardProps {
   todo: Todo;
@@ -117,11 +118,13 @@ const TodoCard = ({
         )}
         <div className="flex items-center">
           {todo.status === 'active' ? (
-            <CheckIcon
-              type="button"
-              className="cursor-pointer h-7 w-7 text-blue-500 hover:text-blue-700"
-              onClick={() => onChangeStatus(todo)}
-            />
+            <div onClick={() => onChangeStatus(todo)}>
+              <Check
+                classString={
+                  'cursor-pointer h-7 w-7 fill-current stroke-current stroke-0 text-blue-500 hover:text-blue-700'
+                }
+              />
+            </div>
           ) : (
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -130,11 +133,13 @@ const TodoCard = ({
               Reactivate
             </button>
           )}
-          <XIcon
-            type="button"
-            className="ml-3 cursor-pointer h-7 w-7 text-red-500 hover:text-red-700"
-            onClick={() => onDeleteTodo(todo.id)}
-          />
+          <div onClick={() => onDeleteTodo(todo.id)} className="ml-3">
+            <Close
+              classString={
+                'cursor-pointer h-7 w-7 fill-current stroke-current stroke-0 text-red-500 hover:text-red-700'
+              }
+            />
+          </div>
         </div>
       </div>
     </li>

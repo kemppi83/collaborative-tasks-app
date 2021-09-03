@@ -48,12 +48,20 @@ const TodoList = ({
           <button
             type="button"
             onClick={() => dispatch(showForm())}
-            className="p-1 font-bold"
+            className="ml-3 bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
           >
-            here
+            Add todo
           </button>
         </div>
-      ) : null}
+      ) : (
+        <button
+          type="button"
+          onClick={() => dispatch(showForm())}
+          className="bg-blue-500 hover:bg-blue-700 text-white py-1 px-4 rounded"
+        >
+          Add todo
+        </button>
+      )}
       {todos.map(todo => {
         return todo.status === 'active' ? (
           <TodoCard

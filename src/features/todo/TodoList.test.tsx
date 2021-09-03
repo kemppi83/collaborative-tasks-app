@@ -1,3 +1,9 @@
+/*
+  This test was created before Redux-toolkit was implemented.
+  TODO: Make this into an integration test which mocks the api calls and
+  the Redux store. Instructions: https://redux.js.org/usage/writing-tests
+*/
+
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 

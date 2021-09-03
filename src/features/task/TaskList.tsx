@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+
 import { useTasks } from '../../hooks/useTasks';
 import { useAppDispatch } from '../../hooks/store';
 import { updateTask, deleteTask } from './taskSlice';
+import Close from '../buttons/Close';
+import Check from '../buttons/Check';
 
 import type { Task } from '../../app/models';
-
-import { CheckIcon, XIcon } from '@heroicons/react/solid';
 
 interface TaskListProps {
   todoId: string;
@@ -65,11 +66,13 @@ const TaskList = ({
             </p>
             <div className="flex items-center">
               {task.status === 'active' ? (
-                <CheckIcon
-                  type="button"
-                  className="cursor-pointer h-5 w-5 text-blue-500 hover:text-blue-700"
-                  onClick={() => onChangeStatus(task)}
-                />
+                <div onClick={() => onChangeStatus(task)}>
+                  <Check
+                    classString={
+                      'cursor-pointer h-5 w-5 fill-current stroke-current stroke-0 text-blue-500 hover:text-blue-700'
+                    }
+                  />
+                </div>
               ) : (
                 <button
                   className=" hover:text-blue-700 text-blue-500 text-xs py-1 px-2 rounded"
@@ -79,11 +82,13 @@ const TaskList = ({
                   Reactivate
                 </button>
               )}
-              <XIcon
-                type="button"
-                className="cursor-pointer h-5 w-5 text-red-500 hover:text-red-700"
-                onClick={() => onDeleteTask(task.id)}
-              />
+              <div onClick={() => onDeleteTask(task.id)}>
+                <Close
+                  classString={
+                    'cursor-pointer h-5 w-5 fill-current stroke-current stroke-0 text-red-500 hover:text-red-700'
+                  }
+                />
+              </div>
             </div>
           </li>
         ))}

@@ -43,7 +43,13 @@ const Nav = (): JSX.Element => {
     dispatch(resetTodos());
     dispatch(resetCredentials());
     localStorage.removeItem('token');
+    setIsOpen(!isOpen);
     push('/login');
+  };
+
+  const redirectHandler = (path: string) => {
+    setIsOpen(!isOpen);
+    push(path);
   };
 
   return (
@@ -87,18 +93,18 @@ const Nav = (): JSX.Element => {
           ref={node}
           className="fixed w-72 h-screen top-0 right-0 z-10 flex flex-col items-center bg-blue-200 bg-opacity-95"
         >
-          <Close
-            classString={
-              'cursor-pointer h-10 w-10 fill-current stroke-current stroke-1 text-red-500 hover:text-red-700 ml-auto mr-2 mt-4'
-            }
-            clickHandler={setIsOpen}
-            isOpen={isOpen}
-          />
+          <div onClick={() => setIsOpen(!isOpen)} className="ml-auto mr-2 mt-4">
+            <Close
+              classString={
+                'cursor-pointer h-10 w-10 fill-current stroke-current stroke-1 text-red-500 hover:text-red-700'
+              }
+            />
+          </div>
           {user ? (
             <>
               <button
                 type="button"
-                onClick={() => push('/')}
+                onClick={() => redirectHandler('/')}
                 className={popupLine}
               >
                 Home
@@ -121,14 +127,14 @@ const Nav = (): JSX.Element => {
             <>
               <button
                 type="button"
-                onClick={() => push('/login')}
+                onClick={() => redirectHandler('/login')}
                 className={popupLine}
               >
                 Login
               </button>
               <button
                 type="button"
-                onClick={() => push('/signup')}
+                onClick={() => redirectHandler('/signup')}
                 className={popupLine}
               >
                 Sign Up
